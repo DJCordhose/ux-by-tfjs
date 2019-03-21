@@ -1,4 +1,4 @@
-import { LitElement, customElement, html } from "lit-element";
+import { LitElement, html } from "lit-element";
 import { collector } from "./Collector";
 
 export class Demo extends LitElement {
@@ -33,3 +33,4 @@ export class Demo extends LitElement {
     }
 }
 window.customElements.define('ux-demo', Demo)
+collector.train()
