@@ -1,19 +1,3 @@
-/*
-
-
-This is specific to how my input device works (this does not work for touch)
-- using trackpad
-- windows / mac / linux
-- using mouse
-- speed of input device
-
-And personal style
-- beginner / expert
-- fast / slow
-- direct / curvy
-
-*/
-
 import {trainer} from './Trainer'
 
 const DATA_ITEM_NAME = 'sequence-data'
