@@ -20,9 +20,9 @@ export class Demo extends LitElement {
         if (b1 >= 0.5) theme1 = 'primary';
         if (b2 >= 0.5) theme2 = 'primary';
         if (b3 >= 0.5) theme3 = 'primary';
-        if (b1 <= 0.1) theme1 = 'tertiary';
-        if (b2 <= 0.1) theme2 = 'tertiary';
-        if (b3 <= 0.1) theme3 = 'tertiary';
+        if (b1 <= 0.2) theme1 = 'tertiary';
+        if (b2 <= 0.2) theme2 = 'tertiary';
+        if (b3 <= 0.2) theme3 = 'tertiary';
 
         return html`
         <div style="text-align:center">
