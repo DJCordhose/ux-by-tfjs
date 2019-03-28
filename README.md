@@ -1,5 +1,9 @@
 # ux-by-tfjs
 
+https://github.com/DJCordhose/ux-by-tfjs
+
+Notebook for Server side processing: https://colab.research.google.com/github/DJCordhose/ux-by-tfjs/blob/master/notebooks/rnn-model.ipynb
+
 ## What does it do?
 
 After training on your personal mouse paths it can predict what button you are likely to click on. You can then highlight that button for easier access or do anything else that might seem reasonable.
