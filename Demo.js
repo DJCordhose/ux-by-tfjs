@@ -34,8 +34,6 @@ export class Demo extends LitElement {
                 @click=${e => trainer.init()}
                 >Reset Model</vaadin-button>
         <vaadin-button id='b0'
-                @mouseover=${e => collector.mouseEnter(e)}
-                @mouseout=${e => collector.mouseExit(e)}
                 @click=${e => trainer.load()}
                 >Load Model</vaadin-button>
         <vaadin-button
@@ -58,12 +56,12 @@ export class Demo extends LitElement {
                 @mouseover=${e => collector.mouseEnter(e)}
                 @mouseout=${e => collector.mouseExit(e)}
                 >Button #1</vaadin-button>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
             <vaadin-button id='b2' theme='${theme2}'
                 @mouseover=${e => collector.mouseEnter(e)}
                 @mouseout=${e => collector.mouseExit(e)}
                 >Button #2</vaadin-button>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
             <vaadin-button id='b3' theme='${theme3}'
                 @mouseover=${e => collector.mouseEnter(e)}
                 @mouseout=${e => collector.mouseExit(e)}

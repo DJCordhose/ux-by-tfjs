@@ -1,26 +1,25 @@
 import {trainer} from './Trainer'
 
 const DATA_ITEM_NAME = 'sequence-data'
+const UN_INITIALIZED = -1;
+
 
 class Collector {
     constructor() {
-        this.predictMode = true;
+        this.predictMode = false;
         this.posCnt = 0;
-        this.sequenceLength = 25;
-        this.paddingLength = 15;
-        this.noMovementPadding = [0, 0, 0, 0];
+        this.t0 = UN_INITIALIZED;
+        this.bufferLength = 200;
+        this.noMovementPadding = [0, 0, 0, 0, 0];
         this.positions = Array(this.bufferLength).fill(this.noMovementPadding);
         this.datasets = [];
+        
         this.load()
 
         document.body.addEventListener('mousemove', e => this.recordMovement(e));
 
         this.demoEl = document.querySelector('ux-demo')
 
-    }
-
-    get bufferLength() {
-        return this.sequenceLength + this.paddingLength;
     }
 
     train() {
@@ -46,9 +45,18 @@ class Collector {
     }
 
     recordMovement(event) {
-        this.posCnt++
-        const pos = [event.pageX, event.pageY, event.movementX, event.movementY]
+        if (this.t0 === UN_INITIALIZED) {
+            this.t0 = Date.now();
+        }
+
+        const deltaT = Date.now() - this.t0;
+        this.t0 = Date.now()
+
+        const pos = [event.pageX, event.pageY, event.movementX, event.movementY, deltaT]
         this.positions.push(pos)
+
+        this.posCnt++
+
         this.renderPrediction()
     }
 
@@ -78,11 +86,7 @@ class Collector {
     }
 
     positionSlice() {
-        return this.positions.slice(this.positions.length - this.sequenceLength, this.positions.length)
-    }
-
-    positionSlicePadded() {
-        return this.positions.slice(this.positions.length - this.bufferLength, this.positions.length - this.paddingLength)
+        return this.positions.slice(this.positions.length - this.bufferLength, this.positions.length)
     }
 
     createSequence(category) {
@@ -90,7 +94,7 @@ class Collector {
             return;
         }
 
-        const sequence = this.positionSlicePadded();
+        const sequence = this.positionSlice();
 
         const data = {
             x: sequence,
@@ -103,6 +107,8 @@ class Collector {
 
         this.clipPositions()
         this.save()
+
+        this.t0 = Date.now()
     }
 
     highlight(element) {
