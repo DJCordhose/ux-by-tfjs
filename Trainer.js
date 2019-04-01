@@ -1,6 +1,8 @@
 import * as tf from '@tensorflow/tfjs';
 // import * as tfvis from '@tensorflow/tfjs-vis';
 
+import * as _ from 'lodash-es';
+
 console.log(tf.version);
 // console.log(tfvis.version);
 
@@ -9,6 +11,8 @@ const BATCH_SIZE = 50;
 
 const N_FEATURES = 5;
 const N_STEPS = 200;
+
+const SEGMENT_SIZE = 50;
 
 const SEED = undefined;
 
@@ -26,8 +30,8 @@ class Trainer {
                 name: "gru1",
                 activation: 'tanh',
                 // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
-                units: 50,
-                inputShape: [N_STEPS, N_FEATURES]
+                units: 75,
+                inputShape: [SEGMENT_SIZE, N_FEATURES]
             })
         );
         this.model.add(
@@ -47,16 +51,43 @@ class Trainer {
     }
 
     async train(data) {
+        console.log('training on datasets', data.length)
+
         const xs = data.map(({ x }) => Object.values(x));
         // console.log(xs)
 
+        // xs nDatasets, 200, 5
+        // segmentSize = 50
+        // nSegments = 200 / segmentSize
+        // xsNew: nDatasets * nSegments, segmentSize, 5 
+
+        let newXs = [];
+        
+        xs.forEach(x => {
+            const chunks = _.chunk(x, SEGMENT_SIZE);
+            // _.flatten()
+            newXs = newXs.concat(chunks);
+        });
+
         const ys = data.map(({ y }) => y - 1);
-        console.log(ys)
 
-        console.log('training on datasets', data.length)
 
-        const X = tf.tensor3d(xs);
-        const y = tf.tensor1d(ys, "int32");
+        let newYs = [];
+        ys.forEach(y => {
+            const labels = new Array(N_STEPS / SEGMENT_SIZE).fill(y);
+            newYs = newYs.concat(labels);
+        });
+
+        console.assert(newXs.length === newYs.length, 'input and output should have the same length');
+        console.assert(newXs.length === xs.length * N_STEPS / SEGMENT_SIZE, 'data size should be properly expanded');
+
+        // ys nDatasets, 1
+
+       // ysNew (nDatasets * nSegments) * 1
+
+
+        const X = tf.tensor3d(newXs);
+        const y = tf.tensor1d(newYs, "int32");
 
         const consoleCallbacks = {
             onEpochEnd: (...args) => {
@@ -83,10 +114,10 @@ class Trainer {
             acc[acc.length - 1]
             }, accuracy on unknown data: ${val_acc[val_acc.length - 1]}`;
         console.log(summary);
-        const sample = xs[0]
-        console.log(sample);
+        const sample = newXs[0]
+        // console.log(sample);
         console.log(await this.predict(sample))
-        console.log(ys[0])
+        console.log(newYs[0])
     }
 
     async save() {

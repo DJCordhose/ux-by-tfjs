@@ -10,8 +10,9 @@ class Collector {
         this.posCnt = 0;
         this.t0 = UN_INITIALIZED;
         this.bufferLength = 200;
+        this.predictionBufferLength = 50;
         this.noMovementPadding = [0, 0, 0, 0, 0];
-        this.positions = Array(this.bufferLength).fill(this.noMovementPadding);
+        this.positions = new Array(this.bufferLength).fill(this.noMovementPadding);
         this.datasets = [];
         this.eventThreshold = 0;
         
@@ -67,7 +68,7 @@ class Collector {
             this.eventThreshold++;
             if (this.eventThreshold > 20) {
                 const prediction = await this.predict();
-                const [_, b1, b2, b3] = prediction;
+                const [b1, b2, b3] = prediction;
                 if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0) {
                     // console.warn('invalid prediction')
                     this.demoEl.prediction = [0.33, 0.33, 0.33]
@@ -83,7 +84,7 @@ class Collector {
     }
 
     async predict() {
-        const sequence = this.positionSlice();
+        const sequence = this.positionPredictionSlice();
         const prediction = await trainer.predict(sequence);
         return prediction;
     }
@@ -95,6 +96,10 @@ class Collector {
 
     positionSlice() {
         return this.positions.slice(this.positions.length - this.bufferLength, this.positions.length)
+    }
+
+    positionPredictionSlice() {
+        return this.positions.slice(this.positions.length - this.predictionBufferLength, this.positions.length)
     }
 
     createSequence(category) {
