@@ -13,6 +13,7 @@ class Collector {
         this.noMovementPadding = [0, 0, 0, 0, 0];
         this.positions = Array(this.bufferLength).fill(this.noMovementPadding);
         this.datasets = [];
+        this.eventThreshold = 0;
         
         this.load()
 
@@ -61,16 +62,23 @@ class Collector {
     }
 
     async renderPrediction() {
+
         if (this.predictMode) {
-            const prediction = await this.predict();
-            const [_, b1, b2, b3] = prediction;
-            if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0) {
-                // console.warn('invalid prediction')
-                this.demoEl.prediction = [0.33, 0.33, 0.33]
-            } else {
-                // console.log(prediction)
-                this.demoEl.prediction = [b1, b2, b3];
+            this.eventThreshold++;
+            if (this.eventThreshold > 20) {
+                const prediction = await this.predict();
+                const [_, b1, b2, b3] = prediction;
+                if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0) {
+                    // console.warn('invalid prediction')
+                    this.demoEl.prediction = [0.33, 0.33, 0.33]
+                } else {
+                    // console.log(prediction)
+                    this.demoEl.prediction = [b1, b2, b3];
+                }
+
+                this.eventThreshold = 0;
             }
+            
         }
     }
 

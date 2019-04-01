@@ -4,11 +4,11 @@ import * as tf from '@tensorflow/tfjs';
 console.log(tf.version);
 // console.log(tfvis.version);
 
-const EPOCHS = 50;
+const EPOCHS = 25;
 const BATCH_SIZE = 50;
 
-const N_FEATURES = 4;
-const N_STEPS = 25;
+const N_FEATURES = 5;
+const N_STEPS = 200;
 
 const SEED = undefined;
 
@@ -104,7 +104,9 @@ class Trainer {
     }
 
     async predict(X) {
-        return await this.model.predict(tf.tensor3d([X])).data()
+        const prediction = await this.model.predict(tf.tensor3d([X])).data();
+        console.log(prediction) 
+        return prediction;
     }
 
 }
