@@ -67,4 +67,4 @@ _Hypothesis: more context works better and movements far away could still indica
 
 <img src='img/accuracy-4-segments.png'>
 
-_ and should be evaluated differently (per segment)_
+_and should be evaluated differently (per segment)_

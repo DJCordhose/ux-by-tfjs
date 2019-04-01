@@ -33,7 +33,7 @@ class Trainer {
         this.model.add(
             tf.layers.dense({
                 name: "softmax", 
-                units: 4,
+                units: 3,
                 // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 activation: "softmax"
             })
@@ -50,7 +50,7 @@ class Trainer {
         const xs = data.map(({ x }) => Object.values(x));
         // console.log(xs)
 
-        const ys = data.map(({ y }) => y);
+        const ys = data.map(({ y }) => y - 1);
         console.log(ys)
 
         console.log('training on datasets', data.length)
