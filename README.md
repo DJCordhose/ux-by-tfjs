@@ -40,3 +40,31 @@ And personal style
 * create baselines to understand if this is really good
   * proximity based
   * interpolation of path using linear regression (or just dx/dy for a single point)
+
+## History
+
+### Experiment 1
+
+* uses fixed padding (final 15 events before hitting button are dropped)
+* four input values: posX, posY, deltaX, deltaY
+* uses special zone: meaning no button navigated
+* buttons in a single line and close to each other
+* training data by always going from neutral zone to button in a straight line
+
+<img src='img/ux-predict.gif'>
+
+### Experiment 2
+
+_Hypothesis: more context works better and movements far away could still indicate button_
+
+* records raw events to give more flexibility
+* adds deltaT to input values
+* buttons move closer together
+* training data much more random
+* training works by splitting into 4 segments each used for prediction of button
+* clearly overfits, but task is hard
+* needs to be tried out in practice
+
+<img src='img/accuracy-4-segments.png'>
+
+_ and should be evaluated differently (per segment)_
