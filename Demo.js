@@ -34,8 +34,8 @@ export class Demo extends LitElement {
                 @click=${e => collector.train()}
                 >Train Model</vaadin-button>
         <vaadin-button
-                @click=${e => train.toggleVisor()}
-                >Toggle Visor</vaadin-button>
+                @click=${e => trainer.showVisor()}
+                >Show Visor</vaadin-button>
         <vaadin-button
                 @click=${e => trainer.init()}
                 >Reset Model</vaadin-button>

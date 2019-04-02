@@ -17,7 +17,6 @@ const N_SEGMENTS = 2;
 
 const SEED = undefined;
 
-
 const MODEL_URL =
   "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
 
@@ -150,6 +149,13 @@ class Trainer {
         return prediction;
     }
 
+    async showVisor() {
+        const surface = {
+          name: 'Model Summary',
+          tab: 'Model'
+        };
+        tfvis.show.modelSummary(surface, this.model);
+      }
 }
 
 export const trainer = new Trainer()

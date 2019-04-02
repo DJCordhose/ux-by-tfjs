@@ -36,8 +36,6 @@ And personal style
   * proximity based
   * interpolation of path using linear regression (or just dx/dy for a single point)
 * add tf-vis to monitor training
-* Upload Model
-* add across-the-board regularization
 * pre-trained model can be converted to tf.js: sharing of common model
 
 ## History
@@ -78,6 +76,8 @@ _Hypothesis: only close movements can be used for prediction_
 * better demo:
   * buttons closer together
   * prediction much earlier
+* Download know good model from remote
+* added across-the-board regularization
 
 <img src='img/ux-predict-3.gif'>
 
