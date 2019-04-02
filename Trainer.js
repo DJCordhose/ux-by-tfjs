@@ -6,13 +6,14 @@ import * as _ from 'lodash-es';
 console.log(tf.version);
 // console.log(tfvis.version);
 
-const EPOCHS = 25;
-const BATCH_SIZE = 50;
+const EPOCHS = 500;
+const BATCH_SIZE = 200;
 
 const N_FEATURES = 5;
 const N_STEPS = 200;
 
-const SEGMENT_SIZE = 50;
+const SEGMENT_SIZE = 25;
+const N_SEGMENTS = 2;
 
 const SEED = undefined;
 
@@ -29,8 +30,9 @@ class Trainer {
             tf.layers.gru({
                 name: "gru1",
                 activation: 'tanh',
+                // activation: 'relu',
                 // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
-                units: 75,
+                units: 50,
                 inputShape: [SEGMENT_SIZE, N_FEATURES]
             })
         );
@@ -62,29 +64,24 @@ class Trainer {
         // xsNew: nDatasets * nSegments, segmentSize, 5 
 
         let newXs = [];
-        
         xs.forEach(x => {
-            const chunks = _.chunk(x, SEGMENT_SIZE);
-            // _.flatten()
+            let chunks = _.chunk(x, SEGMENT_SIZE);
+            chunks = chunks.slice(chunks.length - N_SEGMENTS)
             newXs = newXs.concat(chunks);
         });
 
+        // ys nDatasets, 1
+       // ysNew (nDatasets * nSegments) * 1
         const ys = data.map(({ y }) => y - 1);
-
-
         let newYs = [];
         ys.forEach(y => {
-            const labels = new Array(N_STEPS / SEGMENT_SIZE).fill(y);
+            const labels = new Array(N_SEGMENTS).fill(y);
             newYs = newYs.concat(labels);
         });
 
         console.assert(newXs.length === newYs.length, 'input and output should have the same length');
-        console.assert(newXs.length === xs.length * N_STEPS / SEGMENT_SIZE, 'data size should be properly expanded');
-
-        // ys nDatasets, 1
-
-       // ysNew (nDatasets * nSegments) * 1
-
+        // console.assert(newXs.length === xs.length * N_STEPS / SEGMENT_SIZE, 'data size should be properly expanded');
+        console.assert(_.isEqual(_.uniq(newYs), [0, 1, 2]), 'labels should only be 0, 1, or 2');
 
         const X = tf.tensor3d(newXs);
         const y = tf.tensor1d(newYs, "int32");
@@ -106,7 +103,7 @@ class Trainer {
             epochs: EPOCHS,
             validationSplit: 0.2,
             batchSize: BATCH_SIZE,
-            shuffle: true,
+            // shuffle: true,
             callbacks: consoleCallbacks
         });
         const { acc, loss, val_acc, val_loss } = history.history;

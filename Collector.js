@@ -3,15 +3,19 @@ import {trainer} from './Trainer'
 const DATA_ITEM_NAME = 'sequence-data'
 const UN_INITIALIZED = -1;
 
+const PREDICTION_EVENT_THRESHOLD = 1;
+
+const PREDICTION_BUFFER_LENGTH = 25;
 
 class Collector {
     constructor() {
-        this.predictMode = false;
+        this.predictMode = true;
+        trainer.load();
         this.posCnt = 0;
         this.t0 = UN_INITIALIZED;
         this.bufferLength = 200;
-        this.predictionBufferLength = 50;
         this.noMovementPadding = [0, 0, 0, 0, 0];
+        this.pos = this.noMovementPadding;
         this.positions = new Array(this.bufferLength).fill(this.noMovementPadding);
         this.datasets = [];
         this.eventThreshold = 0;
@@ -54,8 +58,8 @@ class Collector {
         const deltaT = Date.now() - this.t0;
         this.t0 = Date.now()
 
-        const pos = [event.pageX, event.pageY, event.movementX, event.movementY, deltaT]
-        this.positions.push(pos)
+        this.pos = [event.pageX, event.pageY, event.movementX, event.movementY, deltaT]
+        this.positions.push(this.pos)
 
         this.posCnt++
 
@@ -63,15 +67,16 @@ class Collector {
     }
 
     async renderPrediction() {
-
         if (this.predictMode) {
             this.eventThreshold++;
-            if (this.eventThreshold > 20) {
+            if (this.eventThreshold >= PREDICTION_EVENT_THRESHOLD) {
                 const prediction = await this.predict();
                 const [b1, b2, b3] = prediction;
-                if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0) {
+                const [posX, posY, deltaX, deltaY, deltaT] = this.pos;
+                const demoZeroZone = posY < 225;
+                if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0 || demoZeroZone) {
                     // console.warn('invalid prediction')
-                    this.demoEl.prediction = [0.33, 0.33, 0.33]
+                    this.demoEl.prediction = [0, 0, 0]
                 } else {
                     // console.log(prediction)
                     this.demoEl.prediction = [b1, b2, b3];
@@ -99,7 +104,7 @@ class Collector {
     }
 
     positionPredictionSlice() {
-        return this.positions.slice(this.positions.length - this.predictionBufferLength, this.positions.length)
+        return this.positions.slice(this.positions.length - PREDICTION_BUFFER_LENGTH, this.positions.length)
     }
 
     createSequence(category) {

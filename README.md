@@ -32,14 +32,13 @@ And personal style
 
 ## Possible improvements / next steps
 
-* collect and store raw path data
-  * decide what makes sense later, be more flexible
-* split path to aim into fragments
-  * better prediction: each good for prediction in different parts of the path
-  * more training data
 * create baselines to understand if this is really good
   * proximity based
   * interpolation of path using linear regression (or just dx/dy for a single point)
+* add tf-vis to monitor training
+* Upload Model
+* add across-the-board regularization
+* pre-trained model can be converted to tf.js: sharing of common model
 
 ## History
 
@@ -57,14 +56,30 @@ And personal style
 
 _Hypothesis: more context works better and movements far away could still indicate button_
 
+* split path to aim into fragments
+  * better prediction: each good for prediction in different parts of the path
+  * more training data
 * records raw events to give more flexibility
 * adds deltaT to input values
-* buttons move closer together
+* buttons moved closer together
 * training data much more random
 * training works by splitting into 4 segments each used for prediction of button
 * clearly overfits, but task is hard
-* needs to be tried out in practice
+* does not well in practice
 
 <img src='img/accuracy-4-segments.png'>
 
-_and should be evaluated differently (per segment)_
+### Experiment 3
+
+_Hypothesis: only close movements can be used for prediction_
+
+* clipped to two close segments
+* introduced zeroed out zone for demo purposes (posY < 225)
+* better demo:
+  * buttons closer together
+  * prediction much earlier
+
+<img src='img/ux-predict-3.gif'>
+
+
+<img src='img/accuracy-final-2-segments.png'>

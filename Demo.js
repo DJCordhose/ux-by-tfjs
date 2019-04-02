@@ -2,6 +2,9 @@ import { LitElement, html } from "lit-element";
 import { collector } from "./Collector";
 import { trainer } from "./Trainer";
 
+const PRIMARY_THRESHOLD = 0.5;
+const SECONDARY_THRESHOLD = 0.3;
+
 export class Demo extends LitElement {
     static get properties() {
         return {
@@ -17,12 +20,12 @@ export class Demo extends LitElement {
     render() {
         const [b1, b2, b3] = this.prediction;
         let [theme1, theme2, theme3] = ['secondary', 'secondary', 'secondary']
-        if (b1 >= 0.5) theme1 = 'primary';
-        if (b2 >= 0.5) theme2 = 'primary';
-        if (b3 >= 0.5) theme3 = 'primary';
-        if (b1 <= 0.2) theme1 = 'tertiary';
-        if (b2 <= 0.2) theme2 = 'tertiary';
-        if (b3 <= 0.2) theme3 = 'tertiary';
+        if (b1 >= PRIMARY_THRESHOLD) theme1 = 'primary';
+        if (b2 >= PRIMARY_THRESHOLD) theme2 = 'primary';
+        if (b3 >= PRIMARY_THRESHOLD) theme3 = 'primary';
+        if (b1 <= SECONDARY_THRESHOLD) theme1 = 'tertiary';
+        if (b2 <= SECONDARY_THRESHOLD) theme2 = 'tertiary';
+        if (b3 <= SECONDARY_THRESHOLD) theme3 = 'tertiary';
 
         return html`
         <div style="text-align:center">
