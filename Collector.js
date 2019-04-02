@@ -9,8 +9,8 @@ const PREDICTION_BUFFER_LENGTH = 25;
 
 class Collector {
     constructor() {
-        this.predictMode = true;
-        trainer.load();
+        this.predictMode = false;
+        // trainer.load();
         this.posCnt = 0;
         this.t0 = UN_INITIALIZED;
         this.bufferLength = 200;

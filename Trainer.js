@@ -17,6 +17,10 @@ const N_SEGMENTS = 2;
 
 const SEED = undefined;
 
+
+const MODEL_URL =
+  "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
+
 class Trainer {
 
     constructor() {
@@ -33,9 +37,11 @@ class Trainer {
                 // activation: 'relu',
                 // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 units: 50,
-                inputShape: [SEGMENT_SIZE, N_FEATURES]
+                inputShape: [SEGMENT_SIZE, N_FEATURES],
+                dropout: 0.1
             })
         );
+        this.model.add(tf.layers.batchNormalization());
         this.model.add(
             tf.layers.dense({
                 name: "softmax", 
@@ -128,8 +134,15 @@ class Trainer {
 
     async load() {
         this.model = await tf.loadLayersModel('indexeddb://ux');
-        console.log('model loaded')
+        console.log('model loaded locally')
     }
+
+    async loadRemote() {
+        // https://js.tensorflow.org/api/latest/#loadGraphModel
+        this.model = await tf.loadLayersModel(MODEL_URL);
+        console.log(`remote model loaded from ${MODEL_URL}`)
+    }
+
 
     async predict(X) {
         const prediction = await this.model.predict(tf.tensor3d([X])).data();

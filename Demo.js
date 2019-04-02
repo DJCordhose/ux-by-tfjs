@@ -34,20 +34,26 @@ export class Demo extends LitElement {
                 @click=${e => collector.train()}
                 >Train Model</vaadin-button>
         <vaadin-button
+                @click=${e => train.toggleVisor()}
+                >Toggle Visor</vaadin-button>
+        <vaadin-button
                 @click=${e => trainer.init()}
                 >Reset Model</vaadin-button>
         <vaadin-button id='b0'
                 @click=${e => trainer.load()}
-                >Load Model</vaadin-button>
+                >Load Local Model</vaadin-button>
+        <vaadin-button id='b0'
+                @click=${e => trainer.loadRemote()}
+                >Load Remote Model</vaadin-button>
         <vaadin-button
                 @click=${e => trainer.save()}
-                >Save Model</vaadin-button>
+                >Save Model to Local</vaadin-button>
+        <vaadin-button
+                @click=${e => trainer.download()}
+                >Download Model</vaadin-button>
         <vaadin-button
                 @click=${e => collector.togglePredict()}
                 >Toggle Prediction</vaadin-button>
-        <vaadin-button
-                @click=${e => trainer.download()}
-                >Download</vaadin-button>
             <br>
             <br>
             <br>
