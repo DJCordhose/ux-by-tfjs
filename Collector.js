@@ -88,7 +88,7 @@ class Collector {
                 const prediction = await this.predict();
                 const [b1, b2, b3] = prediction;
                 const [posX, posY, deltaX, deltaY, deltaT] = this.pos;
-                const demoZeroZone = posY < 350;
+                const demoZeroZone = posY < 300;
                 if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0 || demoZeroZone) {
                     // console.warn('invalid prediction')
                     this.demoEl.prediction = [0, 0, 0]
