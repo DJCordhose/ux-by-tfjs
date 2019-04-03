@@ -165,9 +165,10 @@ class Trainer {
 
     async loadRemote() {
         const url = CONVERTED_MODEL_URL;
+        // const url = MODEL_URL;
+        console.log(`loading remote model from ${url}`)
         // https://js.tensorflow.org/api/latest/#loadGraphModel
         this.model = await tf.loadLayersModel(url);
-        console.log(`remote model loaded from ${url}`)
     }
 
     async predict(X) {
