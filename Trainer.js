@@ -61,7 +61,7 @@ class Trainer {
                 name: "rnn1",
                 activation: 'tanh',
                 // activation: 'relu',
-                // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+                kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 units: 50,
                 inputShape: [SEGMENT_SIZE, N_FEATURES],
                 dropout: 0.1
@@ -72,7 +72,7 @@ class Trainer {
             tf.layers.dense({
                 name: "softmax",
                 units: 3,
-                // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+                kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 activation: "softmax"
             })
         );

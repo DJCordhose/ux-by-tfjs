@@ -96,10 +96,8 @@ class Collector {
                     // console.log(prediction)
                     this.demoEl.prediction = [b1, b2, b3];
                 }
-
                 this.eventThreshold = 0;
             }
-            
         }
     }
 

@@ -84,17 +84,16 @@ _Hypothesis: only close movements can be used for prediction_
   * simpleRNN: generalizes great to proximity, even though zero examples in training data
 * pre-trained server model converted to tf.js: seems to be somewhat broken (all predictions are button 3)
 
-<img src='img/ux-predict-4.gif'>
-
 <img src='img/accuracy-reg.png'>
 
 ### Experiment 5
 
+* pre-trained server model converted to tf.js now works due to SimpleRNN
 * different RNN types
   * LSTM/GRU: similar style, but LSTM seems to be a bit better in real world
   * simpleRNN: generalizes great to proximity, even though zero examples in training data
 
-
+<img src='img/simpleRNN.gif'>
 
 ## Possible improvements
 
