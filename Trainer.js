@@ -111,9 +111,12 @@ class Trainer {
             newYs = newYs.concat(labels);
         });
 
+        const uniqLabels = _.sortBy(_.uniq(newYs));
+        console.log(uniqLabels)
+
         console.assert(newXs.length === newYs.length, 'input and output should have the same length');
         // console.assert(newXs.length === xs.length * N_STEPS / SEGMENT_SIZE, 'data size should be properly expanded');
-        console.assert(_.isEqual(_.uniq(newYs), [0, 1, 2]), 'labels should only be 0, 1, or 2');
+        console.assert(_.isEqual(uniqLabels, [0, 1, 2]), 'labels should only be 0, 1, or 2');
 
         const X = tf.tensor3d(newXs);
         const y = tf.tensor1d(newYs, "int32");

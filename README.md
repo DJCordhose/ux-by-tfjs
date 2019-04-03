@@ -88,8 +88,15 @@ _Hypothesis: only close movements can be used for prediction_
 
 <img src='img/accuracy-reg.png'>
 
+### Experiment 5
 
-## Possible improvements / next steps
+* different RNN types
+  * LSTM/GRU: similar style, but LSTM seems to be a bit better in real world
+  * simpleRNN: generalizes great to proximity, even though zero examples in training data
+
+
+
+## Possible improvements
 
 * create baselines to understand if this is really good
   * proximity based
