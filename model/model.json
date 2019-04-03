@@ -29,7 +29,7 @@
                             "time_major": false,
                             "units": 50,
                             "activation": "tanh",
-                            "recurrent_activation": "sigmoid",
+                            "recurrent_activation": "hard_sigmoid",
                             "use_bias": true,
                             "kernel_initializer": {
                                 "class_name": "GlorotUniform",
