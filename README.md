@@ -30,13 +30,6 @@ And personal style
 - fast / slow
 - direct / curvy
 
-## Possible improvements / next steps
-
-* create baselines to understand if this is really good
-  * proximity based
-  * interpolation of path using linear regression (or just dx/dy for a single point)
-* pre-trained model can be converted to tf.js: sharing of common model
-
 ## History
 
 ### Experiment 1
@@ -86,10 +79,18 @@ _Hypothesis: only close movements can be used for prediction_
 * added tfjs-vis
 * added across-the-board regularization
 * changed layout
-
+* different RNN types
+  * LSTM/GRU: similar style, but LSTM seems to be a bit better in real world
+  * simpleRNN: generalizes great to proximity, even though zero examples in training data
+* pre-trained server model converted to tf.js: seems to be somewhat broken (all predictions are button 3)
 
 <img src='img/ux-predict-4.gif'>
 
 <img src='img/accuracy-reg.png'>
 
 
+## Possible improvements / next steps
+
+* create baselines to understand if this is really good
+  * proximity based
+  * interpolation of path using linear regression (or just dx/dy for a single point)

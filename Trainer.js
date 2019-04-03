@@ -17,6 +17,10 @@ const N_SEGMENTS = 2;
 
 const SEED = undefined;
 
+const SIMPLE_RNN_MODEL_URL =
+    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux-rnn.json";
+
+
 const MODEL_URL =
     "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
 
@@ -33,8 +37,28 @@ class Trainer {
         this.model = tf.sequential();
         window.trainer = this;
         this.model.add(
-            tf.layers.gru({
-                name: "gru1",
+            // tf.layers.gru({
+            //     name: "gru1",
+            //     activation: 'tanh',
+            //     // activation: 'relu',
+            //     // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+            //     units: 50,
+            //     inputShape: [SEGMENT_SIZE, N_FEATURES],
+            //     dropout: 0.1
+            // })
+            // slower to train and worse evaluation, but really good real world performance
+            // tf.layers.lstm({
+            //     name: "lstm1",
+            //     activation: 'tanh',
+            //     // activation: 'relu',
+            //     // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+            //     units: 50,
+            //     inputShape: [SEGMENT_SIZE, N_FEATURES],
+            //     dropout: 0.1
+            // })
+            // trains fast, bad evaluation, but in real life does what we expect, only uses very recent history, generalizing great by proximity
+            tf.layers.simpleRNN({
+                name: "rnn1",
                 activation: 'tanh',
                 // activation: 'relu',
                 // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
@@ -165,7 +189,8 @@ class Trainer {
 
     async loadRemote() {
         // const url = CONVERTED_MODEL_URL;
-        const url = MODEL_URL;
+        // const url = MODEL_URL;
+        const url = SIMPLE_RNN_MODEL_URL
         console.log(`loading remote model from ${url}`)
         // https://js.tensorflow.org/api/latest/#loadGraphModel
         this.model = await tf.loadLayersModel(url);
