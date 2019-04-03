@@ -20,6 +20,9 @@ const SEED = undefined;
 const MODEL_URL =
     "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
 
+const CONVERTED_MODEL_URL =
+    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/model.json";
+
 class Trainer {
 
     constructor() {
@@ -161,9 +164,10 @@ class Trainer {
     }
 
     async loadRemote() {
+        const url = CONVERTED_MODEL_URL;
         // https://js.tensorflow.org/api/latest/#loadGraphModel
-        this.model = await tf.loadLayersModel(MODEL_URL);
-        console.log(`remote model loaded from ${MODEL_URL}`)
+        this.model = await tf.loadLayersModel(url);
+        console.log(`remote model loaded from ${url}`)
     }
 
     async predict(X) {
