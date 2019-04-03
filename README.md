@@ -35,7 +35,6 @@ And personal style
 * create baselines to understand if this is really good
   * proximity based
   * interpolation of path using linear regression (or just dx/dy for a single point)
-* add tf-vis to monitor training
 * pre-trained model can be converted to tf.js: sharing of common model
 
 ## History
@@ -76,10 +75,21 @@ _Hypothesis: only close movements can be used for prediction_
 * better demo:
   * buttons closer together
   * prediction much earlier
-* Download know good model from remote
-* added across-the-board regularization
+* Download known good model from remote
 
 <img src='img/ux-predict-3.gif'>
 
-
 <img src='img/accuracy-final-2-segments.png'>
+
+### Experiment 4
+
+* added tfjs-vis
+* added across-the-board regularization
+* changed layout
+
+
+<img src='img/ux-predict-4.gif'>
+
+<img src='img/accuracy-reg.png'>
+
+

@@ -31,11 +31,21 @@ export class Demo extends LitElement {
         <div style="text-align:center">
         <br>
         <vaadin-button
+                @click=${e => trainer.showVisor()}
+                >Toggle Visor</vaadin-button>
+        <vaadin-button
+                @click=${e => trainer.showModel()}
+                >Show Model</vaadin-button>
+        <vaadin-button
                 @click=${e => collector.train()}
                 >Train Model</vaadin-button>
         <vaadin-button
-                @click=${e => trainer.showVisor()}
-                >Show Visor</vaadin-button>
+                @click=${e => collector.evaluate()}
+                >Show Evaluation</vaadin-button>
+        <vaadin-button
+            @click=${e => collector.clear()}
+            >Delete Training Data</vaadin-button>
+        <br><br>
         <vaadin-button
                 @click=${e => trainer.init()}
                 >Reset Model</vaadin-button>
@@ -51,6 +61,7 @@ export class Demo extends LitElement {
         <vaadin-button
                 @click=${e => trainer.download()}
                 >Download Model</vaadin-button>
+        <br><br>
         <vaadin-button
                 @click=${e => collector.togglePredict()}
                 >Toggle Prediction</vaadin-button>
@@ -64,17 +75,17 @@ export class Demo extends LitElement {
             <vaadin-button id='b1' theme='${theme1}'
                 @mouseover=${e => collector.mouseEnter(e)}
                 @mouseout=${e => collector.mouseExit(e)}
-                >Button #1</vaadin-button>
+                >Left Button</vaadin-button>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
             <vaadin-button id='b2' theme='${theme2}'
                 @mouseover=${e => collector.mouseEnter(e)}
                 @mouseout=${e => collector.mouseExit(e)}
-                >Button #2</vaadin-button>
+                >Middle Button</vaadin-button>
                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
             <vaadin-button id='b3' theme='${theme3}'
                 @mouseover=${e => collector.mouseEnter(e)}
                 @mouseout=${e => collector.mouseExit(e)}
-            >Button #3</vaadin-button>
+            >Right Button</vaadin-button>
         </div>
         `
     }

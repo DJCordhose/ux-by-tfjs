@@ -1,12 +1,12 @@
-import * as tf from '@tensorflow/tfjs';
+// import * as tf from '@tensorflow/tfjs';
 // import * as tfvis from '@tensorflow/tfjs-vis';
 
 import * as _ from 'lodash-es';
 
-console.log(tf.version);
+// console.log(tf.version);
 // console.log(tfvis.version);
 
-const EPOCHS = 500;
+const EPOCHS = 200;
 const BATCH_SIZE = 200;
 
 const N_FEATURES = 5;
@@ -18,7 +18,7 @@ const N_SEGMENTS = 2;
 const SEED = undefined;
 
 const MODEL_URL =
-  "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
+    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
 
 class Trainer {
 
@@ -43,7 +43,7 @@ class Trainer {
         this.model.add(tf.layers.batchNormalization());
         this.model.add(
             tf.layers.dense({
-                name: "softmax", 
+                name: "softmax",
                 units: 3,
                 // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 activation: "softmax"
@@ -57,8 +57,8 @@ class Trainer {
         // this.model.summary();
     }
 
-    async train(data) {
-        console.log('training on datasets', data.length)
+    prepareData(data) {
+        console.log('preparing datasets', data.length)
 
         const xs = data.map(({ x }) => Object.values(x));
         // console.log(xs)
@@ -76,7 +76,7 @@ class Trainer {
         });
 
         // ys nDatasets, 1
-       // ysNew (nDatasets * nSegments) * 1
+        // ysNew (nDatasets * nSegments) * 1
         const ys = data.map(({ y }) => y - 1);
         let newYs = [];
         ys.forEach(y => {
@@ -91,6 +91,17 @@ class Trainer {
         const X = tf.tensor3d(newXs);
         const y = tf.tensor1d(newYs, "int32");
 
+        return {
+            X,
+            y,
+            xs: newXs,
+            ys: newYs
+        }
+    }
+
+    async train(data) {
+        const { X, y, xs, ys } = this.prepareData(data);
+
         const consoleCallbacks = {
             onEpochEnd: (...args) => {
                 console.log(...args);
@@ -104,22 +115,35 @@ class Trainer {
             // }
         };
 
+        const metrics = ["loss", "val_loss", "acc", "val_acc"];
+        const container = {
+            name: 'show.fitCallbacks',
+            tab: 'Training',
+            styles: {
+                height: '1000px'
+            }
+        }
+        const vizCallbacks = tfvis.show.fitCallbacks(container, metrics);
+
         const history = await this.model.fit(X, y, {
             epochs: EPOCHS,
             validationSplit: 0.2,
             batchSize: BATCH_SIZE,
-            // shuffle: true,
-            callbacks: consoleCallbacks
+            shuffle: true,
+            callbacks: vizCallbacks
+            // callbacks: consoleCallbacks
         });
+
         const { acc, loss, val_acc, val_loss } = history.history;
         const summary = `accuracy: ${
             acc[acc.length - 1]
             }, accuracy on unknown data: ${val_acc[val_acc.length - 1]}`;
         console.log(summary);
-        const sample = newXs[0]
+
+        const sample = xs[0]
         // console.log(sample);
         console.log(await this.predict(sample))
-        console.log(newYs[0])
+        console.log(ys[0])
     }
 
     async save() {
@@ -142,20 +166,47 @@ class Trainer {
         console.log(`remote model loaded from ${MODEL_URL}`)
     }
 
-
     async predict(X) {
         const prediction = await this.model.predict(tf.tensor3d([X])).data();
-        console.log(prediction) 
+        console.log(prediction)
         return prediction;
     }
 
-    async showVisor() {
+    showModel() {
         const surface = {
-          name: 'Model Summary',
-          tab: 'Model'
+            name: 'Model Summary',
+            tab: 'Model'
         };
         tfvis.show.modelSummary(surface, this.model);
-      }
+    }
+
+    showVisor() {
+        const visor = tfvis.visor();
+        visor.toggle();
+    }
+
+    async showEvaluation(data) {
+        const { X, y, xs, ys } = this.prepareData(data);
+
+        const classNames = ["Left Button", "Middle Button", "Right Button"];
+        const yTrue = y;
+        const yPred = this.model.predict(X).argMax([-1]);
+
+        const confusionMatrix = await tfvis.metrics.confusionMatrix(yTrue, yPred);
+        const container = {
+            name: 'Confusion Matrix',
+            tab: 'Evaluation'
+        };
+        tfvis.show.confusionMatrix(container, confusionMatrix, classNames);
+
+        const classAccuracy = await tfvis.metrics.perClassAccuracy(yTrue, yPred);
+        const accuracyContainer = {
+            name: 'Accuracy',
+            tab: 'Evaluation'
+        };
+        tfvis.show.perClassAccuracy(accuracyContainer, classAccuracy, classNames);
+
+    }
 }
 
 export const trainer = new Trainer()

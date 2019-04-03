@@ -12,14 +12,9 @@ class Collector {
         this.predictMode = false;
         // trainer.load();
         this.posCnt = 0;
-        this.t0 = UN_INITIALIZED;
-        this.bufferLength = 200;
-        this.noMovementPadding = [0, 0, 0, 0, 0];
-        this.pos = this.noMovementPadding;
-        this.positions = new Array(this.bufferLength).fill(this.noMovementPadding);
-        this.datasets = [];
-        this.eventThreshold = 0;
-        
+
+        this.init()
+
         this.load()
 
         document.body.addEventListener('mousemove', e => this.recordMovement(e));
@@ -28,8 +23,28 @@ class Collector {
 
     }
 
+    init() {
+        this.t0 = UN_INITIALIZED;
+        this.bufferLength = 200;
+        this.noMovementPadding = [0, 0, 0, 0, 0];
+        this.pos = this.noMovementPadding;
+        this.positions = new Array(this.bufferLength).fill(this.noMovementPadding);
+        this.datasets = [];
+        this.eventThreshold = 0;
+    }
+
+    clear() {
+        this.init()
+        this.save()
+        console.log('All training data deleted')
+    }
+
     train() {
         trainer.train(this.datasets)
+    }
+
+    evaluate() {
+        trainer.showEvaluation(this.datasets)
     }
 
     togglePredict() {
@@ -73,7 +88,7 @@ class Collector {
                 const prediction = await this.predict();
                 const [b1, b2, b3] = prediction;
                 const [posX, posY, deltaX, deltaY, deltaT] = this.pos;
-                const demoZeroZone = posY < 225;
+                const demoZeroZone = posY < 350;
                 if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0 || demoZeroZone) {
                     // console.warn('invalid prediction')
                     this.demoEl.prediction = [0, 0, 0]
