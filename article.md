@@ -57,9 +57,26 @@ Before we talk about how we will use that data, let us talk about privacy. How w
 ![TensorFlow.js is a library for developing and training ML models in JavaScript, and deploying in browser or on Node.js](https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/img/tfjs.png "TensorFlow.js")
 
 
-Exactly this is possible using 
+Exactly this is possible using the JavaScript implementation of Google's famous TensorFlow library called [TensorFlow.js](https://www.tensorflow.org/js/). We need to defined a neural network that matches our data format, then we train that network, and finally we use that network to predict a button being clicked next based on new, previously unknown data. Even that data can be used to improve that model at any time. All that can happen transparently in the background. The only thing the user might notice is the their machine getting hot or battery level going down as training is executed on the users GPU that takes quite some energy. 
 
-Now, how would like  
+## The actual model
+
+We need to specify a model that is simple and thus fast to train. It also needs to give reasonable results with only very little training data. Even a power user will likely generate less than 100 clicks in a minute, so we should be able to get at least some results with that amount of data.
+
+The most basic type of network layer that can handle sequential data is the vanilla Recurrent Neural Network. As input it will take a number of events (SEGMENT_SIZE) having 5 (N_FEATURES) entries each `(posX, posY, deltaX, deltaY, deltaT)` as explained above. We also need to specify how many neurons and we want - the more the more powerful and the more resource hungry - se we specify 50 of them, which is not many. 
+
+And here it is expressed in terms of TensorFlow.js which will be just readable if you are at familiar with the famous Keras API:
+
+```javascript
+tf.layers.simpleRNN({
+    inputShape: [SEGMENT_SIZE, N_FEATURES],
+    units: 50
+});
+```
+
+TODO
+
+More...
 
 ```javascript
 
