@@ -1,5 +1,6 @@
 # ux-by-tfjs
 
+Online Demo: http://djcordhose.github.io/ux-by-tfjs/dist
 
 Project: https://github.com/DJCordhose/ux-by-tfjs
 
