@@ -6,7 +6,9 @@
   "author": "Oliver Zeigermann <oliver.zeigermann@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "polyserve"
+    "start": "polyserve",
+    "build": "cross-env NODE_ENV=development webpack --config webpack.js",
+    "clean": "node_modules/.bin/del dist"
   },
   "dependencies": {
     "@tensorflow/tfjs": "^1.0.2",
@@ -17,6 +19,11 @@
     "lodash-es": "^4.17.11"
   },
   "devDependencies": {
-    "polyserve": "^0.27.15"
+    "cross-env": "^5.2.0",
+    "del-cli": "^1.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "polyserve": "^0.27.15",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   }
 }

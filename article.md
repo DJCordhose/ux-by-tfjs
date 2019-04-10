@@ -5,6 +5,8 @@ description:
 tags: tensorflow.js, ux, ml
 ---
 
+# Improving User Experience with TensorFlow.js
+
 Imagine you have an application with some buttons or other interactive elements. To make clear which button you would click they often highlight when you click on them. Much like this 
 
 ![Buttons highlighting when hovering over them](https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/img/app.gif "Our Application")

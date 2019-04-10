@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>ux by tfjs</title>
+    <style>
+        html,
+        body,
+        vaadin-split-layout {
+            margin: 0;
+            height: 100%;
+        }
+    </style>
+    <!-- Include the "lumo-color" style module -->
+    <custom-style>
+        <style include="lumo-color lumo-typography"></style>
+    </custom-style>
+</head>
+
+<body>
+    <!-- Does not load properly using ES6 import, so we do it the classic way -->
+    <script src="../lib/tf.js"></script>
+    <script>
+      console.log(tf.version);
+    </script>
+    <script src="../lib/tfjs-vis.min.js"></script>
+
+    <script type="text/javascript" src="main.bundle.js?6461d951890b5875ad6a"></script></body>
+
+    <!-- <script type="module" src='index.js'></script> -->
+        <section theme="light">
+            <div style="text-align:center">
+                <h3>Magic UX</h3>
+                <p>Can we make the machine predict what I am going to click on?</p>
+            </div>
+            <ux-demo></ux-demo>
+        </section>
+
+</html>
