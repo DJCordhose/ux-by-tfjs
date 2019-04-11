@@ -1,6 +1,6 @@
 # ux-by-tfjs
 
-Online Demo: http://djcordhose.github.io/ux-by-tfjs/dist
+Online Demo: http://djcordhose.github.io/ux-by-tfjs/dist (might be hard to find your way along, you need to click the buttons on top in the right order, will add a video explaining or improve UX)
 
 Project: https://github.com/DJCordhose/ux-by-tfjs
 
@@ -16,7 +16,7 @@ After training on your personal mouse paths it can predict what button you are l
 
 ## How does this work?
 
-TODO
+[Have a look at this more complete article](article.md)
 
 ## What makes this hard?
 
