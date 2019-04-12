@@ -17,10 +17,6 @@ const N_SEGMENTS = 2;
 
 const SEED = undefined;
 
-const SIMPLE_RNN_MODEL_URL =
-    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux-rnn.json";
-
-
 const MODEL_URL =
     "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
 
@@ -191,9 +187,8 @@ class Trainer {
     }
 
     async loadRemote() {
-        // const url = CONVERTED_MODEL_URL;
+        const url = CONVERTED_MODEL_URL;
         // const url = MODEL_URL;
-        const url = SIMPLE_RNN_MODEL_URL
         console.log(`loading remote model from ${url}`)
         // https://js.tensorflow.org/api/latest/#loadGraphModel
         this.model = await tf.loadLayersModel(url);
