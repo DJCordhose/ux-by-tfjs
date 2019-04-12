@@ -1,6 +1,6 @@
 # ux-by-tfjs
 
-Online Demo: http://djcordhose.github.io/ux-by-tfjs/dist (might be hard to find your way along, you need to click the buttons on top in the right order, will add a video explaining or improve UX)
+Online Demo: http://djcordhose.github.io/ux-by-tfjs/dist (watch https://youtu.be/kZ8sXFIJQyg to get an idea how to use)
 
 Project: https://github.com/DJCordhose/ux-by-tfjs
 

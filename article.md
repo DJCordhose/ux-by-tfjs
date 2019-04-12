@@ -149,4 +149,4 @@ As a nice benefit this also works offline and puts no load on any servers.
 
 This is just one use case for using TensorFlow.js in the browser, but there must be many more and I hope you to come of with one. To get you started have a look at https://www.tensorflow.org/js/tutorials and the complete project I have put on Github https://github.com/DJCordhose/ux-by-tfjs.
 
-Also watch the video on Youtube TODO that explains how to use the demo at http://djcordhose.github.io/ux-by-tfjs/dist that allows you to try this out yourself without any installation directly in the browser (needs a modern browser, though). 
+Also watch the video https://youtu.be/kZ8sXFIJQyg that explains how to use the demo at http://djcordhose.github.io/ux-by-tfjs/dist that allows you to try this out yourself without any installation directly in the browser (needs a modern browser, though). 
