@@ -194,6 +194,15 @@ class Trainer {
         this.model = await tf.loadLayersModel(url);
     }
 
+    async upload() {
+        const jsonUpload = document.getElementById('json-upload');
+        const weightsUpload = document.getElementById('weights-upload');
+    
+        this.model = await tf.loadLayersModel(
+        tf.io.browserFiles([jsonUpload.files[0], weightsUpload.files[0]]));
+        console.log('model uploaded successfully')
+    }
+
     async predict(X) {
         const prediction = await this.model.predict(tf.tensor3d([X])).data();
         console.log(prediction)

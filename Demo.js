@@ -71,6 +71,10 @@ export class Demo extends LitElement {
                 id="download-model"
                 @click=${e => collector.recordClick(e) && trainer.download()}
                 >Download Model</vaadin-button>
+        <vaadin-button
+                id="upload-model"
+                @click=${e => collector.recordClick(e) && trainer.upload()}
+                >Upload Model</vaadin-button>
         <br><br>
         <vaadin-button
                 id="toggle-prediction"
