@@ -31,39 +31,50 @@ export class Demo extends LitElement {
         <div style="text-align:center">
         <br>
         <vaadin-button
-                @click=${e => trainer.showVisor()}
+                id='toggle-visor'
+                @click=${e => collector.recordClick(e) && trainer.showVisor()}
                 >Toggle Visor</vaadin-button>
         <vaadin-button
-                @click=${e => trainer.showModel()}
+                id='show-model'
+                @click=${e => collector.recordClick(e) && trainer.showModel()}
                 >Show Model</vaadin-button>
         <vaadin-button
-                @click=${e => collector.train()}
+                id='train-model'
+                @click=${e => collector.recordClick(e) && collector.train()}
                 >Train Model</vaadin-button>
         <vaadin-button
-                @click=${e => collector.evaluate()}
+                id='show-eval'
+                @click=${e => collector.recordClick(e) && collector.evaluate()}
                 >Show Evaluation</vaadin-button>
         <vaadin-button
-            @click=${e => collector.clear()}
+                id='reset-data'
+                @click=${e => collector.recordClick(e) && collector.clear()}
             >Delete Training Data</vaadin-button>
         <br><br>
         <vaadin-button
-                @click=${e => trainer.init()}
+                id='reset-model'
+                @click=${e => collector.recordClick(e) && trainer.init()}
                 >Reset Model</vaadin-button>
         <vaadin-button id='b0'
-                @click=${e => trainer.load()}
+                id='load-local-model'
+                @click=${e => collector.recordClick(e) && trainer.load()}
                 >Load Local Model</vaadin-button>
         <vaadin-button id='b0'
-                @click=${e => trainer.loadRemote()}
+                id="load-remote-model"
+                @click=${e => collector.recordClick(e) && trainer.loadRemote()}
                 >Load Remote Model</vaadin-button>
         <vaadin-button
-                @click=${e => trainer.save()}
+                id="save-model-to-local"
+                @click=${e => collector.recordClick(e) && trainer.save()}
                 >Save Model to Local</vaadin-button>
         <vaadin-button
-                @click=${e => trainer.download()}
+                id="download-model"
+                @click=${e => collector.recordClick(e) && trainer.download()}
                 >Download Model</vaadin-button>
         <br><br>
         <vaadin-button
-                @click=${e => collector.togglePredict()}
+                id="toggle-prediction"
+                @click=${e => collector.recordClick(e) && collector.togglePredict()}
                 >Toggle Prediction</vaadin-button>
             <br>
             <br>

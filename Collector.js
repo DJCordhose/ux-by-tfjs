@@ -1,6 +1,7 @@
 import {trainer} from './Trainer'
 
 const DATA_ITEM_NAME = 'sequence-data'
+const CLICK_DATA_ITEM_NAME = 'click-data'
 const UN_INITIALIZED = -1;
 
 const PREDICTION_EVENT_THRESHOLD = 1;
@@ -18,9 +19,7 @@ class Collector {
         this.load()
 
         document.body.addEventListener('mousemove', e => this.recordMovement(e));
-
         this.demoEl = document.querySelector('ux-demo')
-
     }
 
     init() {
@@ -31,6 +30,9 @@ class Collector {
         this.positions = new Array(this.bufferLength).fill(this.noMovementPadding);
         this.datasets = [];
         this.eventThreshold = 0;
+
+        this.currentClickData = [];
+        this.clickData = [this.currentClickData];
     }
 
     clear() {
@@ -56,13 +58,23 @@ class Collector {
         const stringData = localStorage.getItem(DATA_ITEM_NAME)
         if (stringData) {
             this.datasets = JSON.parse(stringData)
-            console.log('Initialize dataset with data sets', this.datasets.length)
+            console.log('Initialize dataset with data sets: ', this.datasets.length)
         }
+        const clickStringData = localStorage.getItem(CLICK_DATA_ITEM_NAME)
+        if (clickStringData) {
+            this.clickData = JSON.parse(clickStringData)
+            console.log('Initialize click data with events: ', this.clickData.length)
+        }
+        this.currentClickData = [];
+        this.clickData.push(this.currentClickData);
     }
 
     save() {
         const stringData = JSON.stringify(this.datasets)
         localStorage.setItem(DATA_ITEM_NAME, stringData)
+
+        const clickStringData = JSON.stringify(this.clickData)
+        localStorage.setItem(CLICK_DATA_ITEM_NAME, clickStringData)
     }
 
     recordMovement(event) {
@@ -162,6 +174,16 @@ class Collector {
         const element = event.currentTarget
         this.reset(element);
         console.log('exit', element)
+    }
+
+    recordClick(event) {
+        const element = event.currentTarget
+        const id = element.id;
+        this.currentClickData.push(id);
+        this.save();
+        // console.log(id);
+        return id;
+   
     }
 
 }
