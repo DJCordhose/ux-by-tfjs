@@ -75,7 +75,7 @@ export class Demo extends LitElement {
                 >Show Evaluation</vaadin-button>
         <vaadin-button
                 id='reset-data'
-                @click=${e => collector.recordClick(e) && collector.clearClickData()}
+                @click=${e => collector.recordClick(e) && collector.clearMouseMovementData()}
             >Delete Training Data</vaadin-button>
         <br><br>
         <vaadin-button

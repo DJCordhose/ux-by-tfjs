@@ -54,7 +54,7 @@ class Collector {
     clearClickData() {
         this.initClickData()
         this.save()
-        console.log('Mouse Movement data deleted')
+        console.log('Click data deleted')
     }
 
     train() {
