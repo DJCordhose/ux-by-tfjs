@@ -50,7 +50,7 @@ class Trainer {
             //     kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
             //     units: 50,
             //     inputShape: [SEGMENT_SIZE, N_FEATURES],
-            //     dropout: 0.2
+            //     dropout: 0.1
             // })
             // trains fast, bad evaluation, but in real life does what we expect, only uses very recent history, generalizing great by proximity
             tf.layers.simpleRNN({
