@@ -22,7 +22,14 @@ class Collector {
         this.demoEl = document.querySelector('ux-demo')
     }
 
+
+
     init() {
+        this.initMouseMovementData()
+        this.initClickData()
+    }
+
+    initMouseMovementData() {
         this.t0 = UN_INITIALIZED;
         this.bufferLength = 200;
         this.noMovementPadding = [0, 0, 0, 0, 0];
@@ -30,15 +37,24 @@ class Collector {
         this.positions = new Array(this.bufferLength).fill(this.noMovementPadding);
         this.datasets = [];
         this.eventThreshold = 0;
+    }
 
+
+    initClickData() {
         this.currentClickData = [];
         this.clickData = [this.currentClickData];
     }
 
-    clear() {
-        this.init()
+    clearMouseMovementData() {
+        this.initMouseMovementData()
         this.save()
-        console.log('All training data deleted')
+        console.log('Mouse Movement data deleted')
+    }
+
+    clearClickData() {
+        this.initClickData()
+        this.save()
+        console.log('Mouse Movement data deleted')
     }
 
     train() {
@@ -100,7 +116,7 @@ class Collector {
                 const prediction = await this.predict();
                 const [b1, b2, b3] = prediction;
                 const [posX, posY, deltaX, deltaY, deltaT] = this.pos;
-                const demoZeroZone = posY < 300;
+                const demoZeroZone = posY > 300;
                 if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0 || demoZeroZone) {
                     // console.warn('invalid prediction')
                     this.demoEl.prediction = [0, 0, 0]
@@ -181,7 +197,7 @@ class Collector {
         const id = element.id;
         this.currentClickData.push(id);
         this.save();
-        // console.log(id);
+        console.log(id);
         return id;
    
     }

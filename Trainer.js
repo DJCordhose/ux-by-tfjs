@@ -40,17 +40,17 @@ class Trainer {
             //     // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
             //     units: 50,
             //     inputShape: [SEGMENT_SIZE, N_FEATURES],
-            //     dropout: 0.1
+            //     dropout: 0.2
             // })
             // slower to train and worse evaluation, but really good real world performance
             // tf.layers.lstm({
             //     name: "lstm1",
             //     activation: 'tanh',
             //     // activation: 'relu',
-            //     // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+            //     kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
             //     units: 50,
             //     inputShape: [SEGMENT_SIZE, N_FEATURES],
-            //     dropout: 0.1
+            //     dropout: 0.2
             // })
             // trains fast, bad evaluation, but in real life does what we expect, only uses very recent history, generalizing great by proximity
             tf.layers.simpleRNN({
@@ -187,8 +187,8 @@ class Trainer {
     }
 
     async loadRemote() {
-        const url = CONVERTED_MODEL_URL;
-        // const url = MODEL_URL;
+        // const url = CONVERTED_MODEL_URL;
+        const url = MODEL_URL;
         console.log(`loading remote model from ${url}`)
         // https://js.tensorflow.org/api/latest/#loadGraphModel
         this.model = await tf.loadLayersModel(url);

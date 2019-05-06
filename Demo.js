@@ -19,6 +19,7 @@ export class Demo extends LitElement {
 
     render() {
         const [b1, b2, b3] = this.prediction;
+
         let [theme1, theme2, theme3] = ['secondary', 'secondary', 'secondary']
         if (b1 >= PRIMARY_THRESHOLD) theme1 = 'primary';
         if (b2 >= PRIMARY_THRESHOLD) theme2 = 'primary';
@@ -27,9 +28,35 @@ export class Demo extends LitElement {
         if (b2 <= SECONDARY_THRESHOLD) theme2 = 'tertiary';
         if (b3 <= SECONDARY_THRESHOLD) theme3 = 'tertiary';
 
+        // console.log([b1, b2, b3])
+        // console.log([theme1, theme2, theme3])
+
         return html`
         <div style="text-align:center">
         <br>
+        <br>
+        <vaadin-button id='b1' theme='${theme1}'
+        @mouseover=${e => collector.mouseEnter(e)}
+        @mouseout=${e => collector.mouseExit(e)}
+        >Left Button</vaadin-button>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
+    <vaadin-button id='b2' theme='${theme2}'
+        @mouseover=${e => collector.mouseEnter(e)}
+        @mouseout=${e => collector.mouseExit(e)}
+        >Middle Button</vaadin-button>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
+    <vaadin-button id='b3' theme='${theme3}'
+        @mouseover=${e => collector.mouseEnter(e)}
+        @mouseout=${e => collector.mouseExit(e)}
+    >Right Button</vaadin-button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
         <vaadin-button
                 id='toggle-visor'
                 @click=${e => collector.recordClick(e) && trainer.showVisor()}
@@ -48,18 +75,18 @@ export class Demo extends LitElement {
                 >Show Evaluation</vaadin-button>
         <vaadin-button
                 id='reset-data'
-                @click=${e => collector.recordClick(e) && collector.clear()}
+                @click=${e => collector.recordClick(e) && collector.clearClickData()}
             >Delete Training Data</vaadin-button>
         <br><br>
         <vaadin-button
                 id='reset-model'
                 @click=${e => collector.recordClick(e) && trainer.init()}
                 >Reset Model</vaadin-button>
-        <vaadin-button id='b0'
+        <vaadin-button 
                 id='load-local-model'
                 @click=${e => collector.recordClick(e) && trainer.load()}
                 >Load Local Model</vaadin-button>
-        <vaadin-button id='b0'
+        <vaadin-button 
                 id="load-remote-model"
                 @click=${e => collector.recordClick(e) && trainer.loadRemote()}
                 >Load Remote Model</vaadin-button>
@@ -80,27 +107,6 @@ export class Demo extends LitElement {
                 id="toggle-prediction"
                 @click=${e => collector.recordClick(e) && collector.togglePredict()}
                 >Toggle Prediction</vaadin-button>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <vaadin-button id='b1' theme='${theme1}'
-                @mouseover=${e => collector.mouseEnter(e)}
-                @mouseout=${e => collector.mouseExit(e)}
-                >Left Button</vaadin-button>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
-            <vaadin-button id='b2' theme='${theme2}'
-                @mouseover=${e => collector.mouseEnter(e)}
-                @mouseout=${e => collector.mouseExit(e)}
-                >Middle Button</vaadin-button>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
-            <vaadin-button id='b3' theme='${theme3}'
-                @mouseover=${e => collector.mouseEnter(e)}
-                @mouseout=${e => collector.mouseExit(e)}
-            >Right Button</vaadin-button>
         </div>
         `
     }
