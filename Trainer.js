@@ -57,9 +57,11 @@ class Trainer {
                 name: "rnn1",
                 activation: 'tanh',
                 // activation: 'relu',
-                kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+                // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 units: 50,
+                // units: 75,
                 inputShape: [SEGMENT_SIZE, N_FEATURES],
+                // dropout: 0.6
                 dropout: 0.1
             })
         );

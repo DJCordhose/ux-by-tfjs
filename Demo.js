@@ -2,8 +2,8 @@ import { LitElement, html } from "lit-element";
 import { collector } from "./Collector";
 import { trainer } from "./Trainer";
 
-const PRIMARY_THRESHOLD = 0.5;
-const SECONDARY_THRESHOLD = 0.3;
+const PRIMARY_THRESHOLD = 0.4;
+const SECONDARY_THRESHOLD = 0.2;
 
 export class Demo extends LitElement {
     static get properties() {
