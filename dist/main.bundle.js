@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "6461d951890b5875ad6a";
+/******/ 	var hotCurrentHash = "0cae3c75a0c58fa27318";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -807,6 +807,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const DATA_ITEM_NAME = 'sequence-data'
+const CLICK_DATA_ITEM_NAME = 'click-data'
 const UN_INITIALIZED = -1;
 
 const PREDICTION_EVENT_THRESHOLD = 1;
@@ -824,12 +825,17 @@ class Collector {
         this.load()
 
         document.body.addEventListener('mousemove', e => this.recordMovement(e));
-
         this.demoEl = document.querySelector('ux-demo')
-
     }
 
+
+
     init() {
+        this.initMouseMovementData()
+        this.initClickData()
+    }
+
+    initMouseMovementData() {
         this.t0 = UN_INITIALIZED;
         this.bufferLength = 200;
         this.noMovementPadding = [0, 0, 0, 0, 0];
@@ -839,10 +845,22 @@ class Collector {
         this.eventThreshold = 0;
     }
 
-    clear() {
-        this.init()
+
+    initClickData() {
+        this.currentClickData = [];
+        this.clickData = [this.currentClickData];
+    }
+
+    clearMouseMovementData() {
+        this.initMouseMovementData()
         this.save()
-        console.log('All training data deleted')
+        console.log('Mouse Movement data deleted')
+    }
+
+    clearClickData() {
+        this.initClickData()
+        this.save()
+        console.log('Click data deleted')
     }
 
     train() {
@@ -862,13 +880,23 @@ class Collector {
         const stringData = localStorage.getItem(DATA_ITEM_NAME)
         if (stringData) {
             this.datasets = JSON.parse(stringData)
-            console.log('Initialize dataset with data sets', this.datasets.length)
+            console.log('Initialize dataset with data sets: ', this.datasets.length)
         }
+        const clickStringData = localStorage.getItem(CLICK_DATA_ITEM_NAME)
+        if (clickStringData) {
+            this.clickData = JSON.parse(clickStringData)
+            console.log('Initialize click data with events: ', this.clickData.length)
+        }
+        this.currentClickData = [];
+        this.clickData.push(this.currentClickData);
     }
 
     save() {
         const stringData = JSON.stringify(this.datasets)
         localStorage.setItem(DATA_ITEM_NAME, stringData)
+
+        const clickStringData = JSON.stringify(this.clickData)
+        localStorage.setItem(CLICK_DATA_ITEM_NAME, clickStringData)
     }
 
     recordMovement(event) {
@@ -894,7 +922,7 @@ class Collector {
                 const prediction = await this.predict();
                 const [b1, b2, b3] = prediction;
                 const [posX, posY, deltaX, deltaY, deltaT] = this.pos;
-                const demoZeroZone = posY < 300;
+                const demoZeroZone = posY > 300;
                 if (b1 === 1.0 || b2 === 1.0 || b3 === 1.0 || demoZeroZone) {
                     // console.warn('invalid prediction')
                     this.demoEl.prediction = [0, 0, 0]
@@ -970,6 +998,16 @@ class Collector {
         console.log('exit', element)
     }
 
+    recordClick(event) {
+        const element = event.currentTarget
+        const id = element.id;
+        this.currentClickData.push(id);
+        this.save();
+        console.log(id);
+        return id;
+   
+    }
+
 }
 
 const collector = new Collector();
@@ -994,8 +1032,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const PRIMARY_THRESHOLD = 0.5;
-const SECONDARY_THRESHOLD = 0.3;
+const PRIMARY_THRESHOLD = 0.4;
+const SECONDARY_THRESHOLD = 0.2;
 
 class Demo extends lit_element__WEBPACK_IMPORTED_MODULE_0__["LitElement"] {
     static get properties() {
@@ -1011,6 +1049,7 @@ class Demo extends lit_element__WEBPACK_IMPORTED_MODULE_0__["LitElement"] {
 
     render() {
         const [b1, b2, b3] = this.prediction;
+
         let [theme1, theme2, theme3] = ['secondary', 'secondary', 'secondary']
         if (b1 >= PRIMARY_THRESHOLD) theme1 = 'primary';
         if (b2 >= PRIMARY_THRESHOLD) theme2 = 'primary';
@@ -1019,65 +1058,85 @@ class Demo extends lit_element__WEBPACK_IMPORTED_MODULE_0__["LitElement"] {
         if (b2 <= SECONDARY_THRESHOLD) theme2 = 'tertiary';
         if (b3 <= SECONDARY_THRESHOLD) theme3 = 'tertiary';
 
+        // console.log([b1, b2, b3])
+        // console.log([theme1, theme2, theme3])
+
         return lit_element__WEBPACK_IMPORTED_MODULE_0__["html"]`
         <div style="text-align:center">
         <br>
+        <br>
+        <vaadin-button id='b1' theme='${theme1}'
+        @mouseover=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseEnter(e)}
+        @mouseout=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseExit(e)}
+        >Left Button</vaadin-button>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
+    <vaadin-button id='b2' theme='${theme2}'
+        @mouseover=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseEnter(e)}
+        @mouseout=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseExit(e)}
+        >Middle Button</vaadin-button>
+        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
+    <vaadin-button id='b3' theme='${theme3}'
+        @mouseover=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseEnter(e)}
+        @mouseout=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseExit(e)}
+    >Right Button</vaadin-button>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
         <vaadin-button
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].showVisor()}
+                id='toggle-visor'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].showVisor()}
                 >Toggle Visor</vaadin-button>
         <vaadin-button
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].showModel()}
+                id='show-model'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].showModel()}
                 >Show Model</vaadin-button>
         <vaadin-button
-                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].train()}
+                id='train-model'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].train()}
                 >Train Model</vaadin-button>
         <vaadin-button
-                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].evaluate()}
+                id='show-eval'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].evaluate()}
                 >Show Evaluation</vaadin-button>
         <vaadin-button
-            @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].clear()}
+                id='reset-data'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].clearMouseMovementData()}
             >Delete Training Data</vaadin-button>
         <br><br>
         <vaadin-button
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].init()}
+                id='reset-model'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].init()}
                 >Reset Model</vaadin-button>
-        <vaadin-button id='b0'
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].load()}
+        <vaadin-button 
+                id='load-local-model'
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].load()}
                 >Load Local Model</vaadin-button>
-        <vaadin-button id='b0'
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].loadRemote()}
+        <vaadin-button 
+                id="load-remote-model"
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].loadRemote()}
                 >Load Remote Model</vaadin-button>
         <vaadin-button
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].save()}
+                id="save-model-to-local"
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].save()}
                 >Save Model to Local</vaadin-button>
         <vaadin-button
-                @click=${e => _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].download()}
+                id="download-model"
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].download()}
                 >Download Model</vaadin-button>
+        <vaadin-button
+                id="upload-model"
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Trainer__WEBPACK_IMPORTED_MODULE_2__["trainer"].upload()}
+                >Upload Model</vaadin-button>
         <br><br>
         <vaadin-button
-                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].togglePredict()}
+                id="toggle-prediction"
+                @click=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].recordClick(e) && _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].togglePredict()}
                 >Toggle Prediction</vaadin-button>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <vaadin-button id='b1' theme='${theme1}'
-                @mouseover=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseEnter(e)}
-                @mouseout=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseExit(e)}
-                >Left Button</vaadin-button>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
-            <vaadin-button id='b2' theme='${theme2}'
-                @mouseover=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseEnter(e)}
-                @mouseout=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseExit(e)}
-                >Middle Button</vaadin-button>
-                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
-            <vaadin-button id='b3' theme='${theme3}'
-                @mouseover=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseEnter(e)}
-                @mouseout=${e => _Collector__WEBPACK_IMPORTED_MODULE_1__["collector"].mouseExit(e)}
-            >Right Button</vaadin-button>
         </div>
         `
     }
@@ -1116,10 +1175,6 @@ const N_SEGMENTS = 2;
 
 const SEED = undefined;
 
-const SIMPLE_RNN_MODEL_URL =
-    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux-rnn.json";
-
-
 const MODEL_URL =
     "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/ux.json";
 
@@ -1143,14 +1198,14 @@ class Trainer {
             //     // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
             //     units: 50,
             //     inputShape: [SEGMENT_SIZE, N_FEATURES],
-            //     dropout: 0.1
+            //     dropout: 0.2
             // })
             // slower to train and worse evaluation, but really good real world performance
             // tf.layers.lstm({
             //     name: "lstm1",
             //     activation: 'tanh',
             //     // activation: 'relu',
-            //     // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+            //     kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
             //     units: 50,
             //     inputShape: [SEGMENT_SIZE, N_FEATURES],
             //     dropout: 0.1
@@ -1160,9 +1215,11 @@ class Trainer {
                 name: "rnn1",
                 activation: 'tanh',
                 // activation: 'relu',
-                kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
+                // kernelInitializer: tf.initializers.glorotNormal({ seed: SEED }),
                 units: 50,
+                // units: 75,
                 inputShape: [SEGMENT_SIZE, N_FEATURES],
+                // dropout: 0.6
                 dropout: 0.1
             })
         );
@@ -1291,11 +1348,19 @@ class Trainer {
 
     async loadRemote() {
         // const url = CONVERTED_MODEL_URL;
-        // const url = MODEL_URL;
-        const url = SIMPLE_RNN_MODEL_URL
+        const url = MODEL_URL;
         console.log(`loading remote model from ${url}`)
         // https://js.tensorflow.org/api/latest/#loadGraphModel
         this.model = await tf.loadLayersModel(url);
+    }
+
+    async upload() {
+        const jsonUpload = document.getElementById('json-upload');
+        const weightsUpload = document.getElementById('weights-upload');
+    
+        this.model = await tf.loadLayersModel(
+        tf.io.browserFiles([jsonUpload.files[0], weightsUpload.files[0]]));
+        console.log('model uploaded successfully')
     }
 
     async predict(X) {
