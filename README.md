@@ -4,6 +4,10 @@ Online Demo: http://djcordhose.github.io/ux-by-tfjs/dist (watch https://youtu.be
 
 Project: https://github.com/DJCordhose/ux-by-tfjs
 
+Video of talk at jsunconf 2019: https://youtu.be/dLbTElqaCC4
+
+Article on dev.to: https://dev.to/djcordhose/improving-user-experience-with-tensorflow-js-4693
+
 Notebook for Server side processing: https://colab.research.google.com/github/DJCordhose/ux-by-tfjs/blob/master/notebooks/rnn-model.ipynb
 
 
