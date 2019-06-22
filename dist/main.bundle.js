@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "0cae3c75a0c58fa27318";
+/******/ 	var hotCurrentHash = "b8bbee67dd8050fe3cb0";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1232,11 +1232,6 @@ class Trainer {
                 activation: "softmax"
             })
         );
-        this.model.compile({
-            loss: "sparseCategoricalCrossentropy",
-            optimizer: "adam",
-            metrics: ["accuracy"]
-        });
         // this.model.summary();
     }
 
@@ -1310,6 +1305,12 @@ class Trainer {
             }
         }
         const vizCallbacks = tfvis.show.fitCallbacks(container, metrics);
+
+        this.model.compile({
+            loss: "sparseCategoricalCrossentropy",
+            optimizer: "adam",
+            metrics: ["accuracy"]
+        });
 
         const history = await this.model.fit(X, y, {
             epochs: EPOCHS,
