@@ -74,11 +74,6 @@ class Trainer {
                 activation: "softmax"
             })
         );
-        this.model.compile({
-            loss: "sparseCategoricalCrossentropy",
-            optimizer: "adam",
-            metrics: ["accuracy"]
-        });
         // this.model.summary();
     }
 
@@ -152,6 +147,12 @@ class Trainer {
             }
         }
         const vizCallbacks = tfvis.show.fitCallbacks(container, metrics);
+
+        this.model.compile({
+            loss: "sparseCategoricalCrossentropy",
+            optimizer: "adam",
+            metrics: ["accuracy"]
+        });
 
         const history = await this.model.fit(X, y, {
             epochs: EPOCHS,
