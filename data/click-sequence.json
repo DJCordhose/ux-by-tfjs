@@ -1,0 +1,37 @@
+[
+    [],
+    [
+        "train-model",
+        "save-model-to-local"
+    ],
+    [
+        "load-local-model",
+        "train-model"
+    ],
+    [
+        "load-local-model",
+        "train-model",
+        "toggle-visor",
+        "toggle-visor",
+        "train-model",
+        "reset-model",
+        "train-model"
+    ],
+    [
+        "train-model",
+        "show-eval",
+        "train-model",
+        "save-model-to-local"
+    ],
+    [
+        "load-local-model",
+        "train-model",
+        "show-eval",
+        "save-model-to-local",
+        "download-model",
+        "toggle-visor",
+        "toggle-prediction"
+    ],
+    [],
+    []
+]
