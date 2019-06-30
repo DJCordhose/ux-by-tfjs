@@ -8,13 +8,29 @@ const SECONDARY_THRESHOLD = 0.2;
 export class Demo extends LitElement {
     static get properties() {
         return {
-            prediction: { type: Array }
+            prediction: { type: Array },
+            help: { type: Array }
         };
     }
 
     constructor() {
         super();
         this.prediction = [0.33, 0.33, 0.33]
+        this.probas = {'download-model': 0.5, 'load-local-model': 0.5,
+        'reset-data': 0.5, 'reset-model': 0.5, 'save-model-to-local': 0.5, 'show-eval': 0.5,
+        'show-model': 0.5, 'toggle-prediction': 0.5, 'toggle-visor': 0.5, 'train-model': 0.5,
+        'upload-model': 0.5};
+    }
+
+    // TODO: not sure if this should rather be a component (if this breaks performance of change detection)
+    createHintButton(id, text, listener, record=true) {
+        const proba = this.probas[id] || 0.5;
+        const clickListener = record ? (e) => collector.recordClick(e) && listener(e) : listener;
+        return html`<hint-button
+        id="${id}"
+        probability=${proba}
+        @click=${clickListener}
+        >${text}</hint-button>`;
     }
 
     render() {
@@ -57,56 +73,22 @@ export class Demo extends LitElement {
     <br>
     <br>
 
-        <vaadin-button
-                id='toggle-visor'
-                @click=${e => collector.recordClick(e) && trainer.showVisor()}
-                >Toggle Visor</vaadin-button>
-        <vaadin-button
-                id='show-model'
-                @click=${e => collector.recordClick(e) && trainer.showModel()}
-                >Show Model</vaadin-button>
-        <vaadin-button
-                id='train-model'
-                @click=${e => collector.recordClick(e) && collector.train()}
-                >Train Model</vaadin-button>
-        <vaadin-button
-                id='show-eval'
-                @click=${e => collector.recordClick(e) && collector.evaluate()}
-                >Show Evaluation</vaadin-button>
-        <vaadin-button
-                id='reset-data'
-                @click=${e => collector.recordClick(e) && collector.clearMouseMovementData()}
-            >Delete Training Data</vaadin-button>
+        ${this.createHintButton('toggle-visor', 'Toggle Visor', e => trainer.showVisor())}
+        ${this.createHintButton('show-model', 'Show Model', e => trainer.showModel())}
+        ${this.createHintButton('train-model', 'Train Model', e => collector.train())}
+        ${this.createHintButton('show-eval', 'Show Evaluation', e => collector.evaluate())}
+        ${this.createHintButton('reset-data', 'Delete Mouse Position Data', e => collector.clearMouseMovementData())}
+        ${this.createHintButton('reset-click-data', 'Delete Click Data', e => collector.clearClickData())}
         <br><br>
-        <vaadin-button
-                id='reset-model'
-                @click=${e => collector.recordClick(e) && trainer.init()}
-                >Reset Model</vaadin-button>
-        <vaadin-button 
-                id='load-local-model'
-                @click=${e => collector.recordClick(e) && trainer.load()}
-                >Load Local Model</vaadin-button>
-        <vaadin-button 
-                id="load-remote-model"
-                @click=${e => collector.recordClick(e) && trainer.loadRemote()}
-                >Load Remote Model</vaadin-button>
-        <vaadin-button
-                id="save-model-to-local"
-                @click=${e => collector.recordClick(e) && trainer.save()}
-                >Save Model to Local</vaadin-button>
-        <vaadin-button
-                id="download-model"
-                @click=${e => collector.recordClick(e) && trainer.download()}
-                >Download Model</vaadin-button>
-        <vaadin-button
-                id="upload-model"
-                @click=${e => collector.recordClick(e) && trainer.upload()}
-                >Upload Model</vaadin-button>
+        ${this.createHintButton('reset-model', 'Reset Model', e => trainer.init())}
+        ${this.createHintButton('load-local-model', 'Load Local Model', e => trainer.load())}
+        ${this.createHintButton('load-remote-model', 'Load Remote Model', e => trainer.loadRemote())}
+        ${this.createHintButton('save-model-to-local', 'Save Model to Local', e => trainer.save())}
+        ${this.createHintButton('download-model', 'Download Model', e => trainer.download())}
+        ${this.createHintButton('upload-model', 'Upload Model', e => trainer.upload())}
         <br><br>
-        <vaadin-button
-                id="toggle-prediction"
-                @click=${e => collector.recordClick(e) && collector.togglePredict()}
-                >Toggle Prediction</vaadin-button>
+        ${this.createHintButton('toggle-prediction', 'Toggle Prediction', e => collector.togglePredict())}
+        ${this.createHintButton('toggle-help', 'Toggle Help Mode', e => collector.toggleHelp(), false)}
         </div>
         `
     }

@@ -8,6 +8,11 @@ const PREDICTION_EVENT_THRESHOLD = 1;
 
 const PREDICTION_BUFFER_LENGTH = 25;
 
+const buttonText2Id = ['<EMPTY>', '<START>', 'download-model', 'load-local-model',
+'reset-data', 'reset-model', 'save-model-to-local', 'show-eval',
+'show-model', 'toggle-prediction', 'toggle-visor', 'train-model',
+'upload-model'];
+
 class Collector {
     constructor() {
         this.predictMode = false;
@@ -200,6 +205,10 @@ class Collector {
         console.log(id);
         return id;
    
+    }
+
+    toggleHelp() {
+        console.log('Toggle Help');
     }
 
 }
