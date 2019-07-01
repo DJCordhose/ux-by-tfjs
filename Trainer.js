@@ -23,6 +23,10 @@ const MODEL_URL =
 const CONVERTED_MODEL_URL =
     "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/model.json";
 
+
+const CLICK_MODEL_URL =
+    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/click/model.json";
+
 class Trainer {
 
     constructor() {
@@ -247,6 +251,22 @@ class Trainer {
         tfvis.show.perClassAccuracy(accuracyContainer, classAccuracy, classNames);
 
     }
+
+    async loadClickModel() {
+        const url = CLICK_MODEL_URL;
+        console.log(`loading click model from ${url}`)
+        this.clickModel = await tf.loadLayersModel(url);
+    }
+
+    async predictClick(X) {
+        if (!this.clickModel) {
+            this.loadClickModel();
+        }
+        const prediction = await this.clickModel(tf.tensor3d([X])).data();
+        console.log(prediction)
+        return prediction;
+    }
+
 }
 
 export const trainer = new Trainer()

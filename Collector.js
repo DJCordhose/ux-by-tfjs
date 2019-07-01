@@ -9,14 +9,17 @@ const PREDICTION_EVENT_THRESHOLD = 1;
 const PREDICTION_BUFFER_LENGTH = 25;
 
 const buttonText2Id = ['<EMPTY>', '<START>', 'download-model', 'load-local-model',
-'reset-data', 'reset-model', 'save-model-to-local', 'show-eval',
-'show-model', 'toggle-prediction', 'toggle-visor', 'train-model',
-'upload-model'];
+       'reset-data', 'reset-model', 'save-model-to-local', 'show-eval',
+       'show-model', 'toggle-prediction', 'toggle-visor', 'train-model',
+       'upload-model'];
 
 class Collector {
     constructor() {
         this.predictMode = false;
+        this.helpMode = false;
+
         // trainer.load();
+
         this.posCnt = 0;
 
         this.init()
@@ -202,6 +205,7 @@ class Collector {
         const id = element.id;
         this.currentClickData.push(id);
         this.save();
+
         console.log(id);
         return id;
    
@@ -209,7 +213,35 @@ class Collector {
 
     toggleHelp() {
         console.log('Toggle Help');
+        this.helpMode = !this.helpMode;
+        console.log('help mode', this.helpMode)
+        this.renderHelp()
+
     }
+
+    async predictHelp() {
+        const sequence = this.clickData;
+        // TODO
+        // const sequence = this.positionPredictionSlice();
+        const prediction = await trainer.predictClick(sequence);
+
+        // const prediction = [0.2, 0.1, 0.1, 0.1, 0.0, 0.0, 0.0,  0.3,  0.1,  0.7,  0.0];
+        return prediction;
+    }
+
+    async renderHelp() {
+        if (this.helpMode) {
+                console.log('rendering help')
+
+                const prediction = await this.predictHelp();
+                const probas = {'download-model': prediction[0], 'load-local-model': prediction[1],
+                'reset-data': prediction[2], 'reset-model': prediction[3], 'save-model-to-local': prediction[4], 'show-eval': prediction[5],
+                'show-model': prediction[6], 'toggle-prediction': prediction[7], 'toggle-visor': prediction[8], 'train-model': prediction[9],
+                'upload-model': prediction[10]};
+                this.demoEl.probas = probas;
+            }
+    }
+
 
 }
 

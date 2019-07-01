@@ -8,7 +8,7 @@
         "model_config": {
             "class_name": "Sequential",
             "config": {
-                "name": "sequential_19",
+                "name": "sequential",
                 "layers": [
                     {
                         "class_name": "Embedding",
@@ -27,7 +27,8 @@
                                 "config": {
                                     "minval": -0.05,
                                     "maxval": 0.05,
-                                    "seed": null
+                                    "seed": null,
+                                    "dtype": "float32"
                                 }
                             },
                             "embeddings_regularizer": null,
@@ -55,19 +56,23 @@
                             "kernel_initializer": {
                                 "class_name": "GlorotUniform",
                                 "config": {
-                                    "seed": null
+                                    "seed": null,
+                                    "dtype": "float32"
                                 }
                             },
                             "recurrent_initializer": {
                                 "class_name": "Orthogonal",
                                 "config": {
                                     "gain": 1.0,
-                                    "seed": null
+                                    "seed": null,
+                                    "dtype": "float32"
                                 }
                             },
                             "bias_initializer": {
                                 "class_name": "Zeros",
-                                "config": {}
+                                "config": {
+                                    "dtype": "float32"
+                                }
                             },
                             "kernel_regularizer": null,
                             "recurrent_regularizer": null,
@@ -83,7 +88,7 @@
                     {
                         "class_name": "BatchNormalization",
                         "config": {
-                            "name": "batch_normalization_11",
+                            "name": "batch_normalization",
                             "trainable": true,
                             "dtype": "float32",
                             "axis": [
@@ -95,19 +100,27 @@
                             "scale": true,
                             "beta_initializer": {
                                 "class_name": "Zeros",
-                                "config": {}
+                                "config": {
+                                    "dtype": "float32"
+                                }
                             },
                             "gamma_initializer": {
                                 "class_name": "Ones",
-                                "config": {}
+                                "config": {
+                                    "dtype": "float32"
+                                }
                             },
                             "moving_mean_initializer": {
                                 "class_name": "Zeros",
-                                "config": {}
+                                "config": {
+                                    "dtype": "float32"
+                                }
                             },
                             "moving_variance_initializer": {
                                 "class_name": "Ones",
-                                "config": {}
+                                "config": {
+                                    "dtype": "float32"
+                                }
                             },
                             "beta_regularizer": null,
                             "gamma_regularizer": null,
@@ -118,7 +131,7 @@
                     {
                         "class_name": "Dropout",
                         "config": {
-                            "name": "dropout_11",
+                            "name": "dropout",
                             "trainable": true,
                             "dtype": "float32",
                             "rate": 0.4,
@@ -138,12 +151,15 @@
                             "kernel_initializer": {
                                 "class_name": "GlorotUniform",
                                 "config": {
-                                    "seed": null
+                                    "seed": null,
+                                    "dtype": "float32"
                                 }
                             },
                             "bias_initializer": {
                                 "class_name": "Zeros",
-                                "config": {}
+                                "config": {
+                                    "dtype": "float32"
+                                }
                             },
                             "kernel_regularizer": null,
                             "bias_regularizer": null,
@@ -156,13 +172,6 @@
             }
         },
         "training_config": {
-            "loss": "sparse_categorical_crossentropy",
-            "metrics": [
-                "accuracy"
-            ],
-            "weighted_metrics": null,
-            "sample_weight_mode": null,
-            "loss_weights": null,
             "optimizer_config": {
                 "class_name": "Adam",
                 "config": {
@@ -174,7 +183,14 @@
                     "epsilon": 1e-07,
                     "amsgrad": false
                 }
-            }
+            },
+            "loss": "sparse_categorical_crossentropy",
+            "metrics": [
+                "accuracy"
+            ],
+            "weighted_metrics": null,
+            "sample_weight_mode": null,
+            "loss_weights": null
         }
     },
     "weightsManifest": [
@@ -184,7 +200,7 @@
             ],
             "weights": [
                 {
-                    "name": "RNN_18/kernel",
+                    "name": "RNN/kernel",
                     "shape": [
                         2,
                         50
@@ -192,7 +208,7 @@
                     "dtype": "float32"
                 },
                 {
-                    "name": "RNN_18/recurrent_kernel",
+                    "name": "RNN/recurrent_kernel",
                     "shape": [
                         50,
                         50
@@ -200,42 +216,42 @@
                     "dtype": "float32"
                 },
                 {
-                    "name": "RNN_18/bias",
+                    "name": "RNN/bias",
                     "shape": [
                         50
                     ],
                     "dtype": "float32"
                 },
                 {
-                    "name": "batch_normalization_11/gamma",
+                    "name": "batch_normalization/gamma",
                     "shape": [
                         50
                     ],
                     "dtype": "float32"
                 },
                 {
-                    "name": "batch_normalization_11/beta",
+                    "name": "batch_normalization/beta",
                     "shape": [
                         50
                     ],
                     "dtype": "float32"
                 },
                 {
-                    "name": "batch_normalization_11/moving_mean",
+                    "name": "batch_normalization/moving_mean",
                     "shape": [
                         50
                     ],
                     "dtype": "float32"
                 },
                 {
-                    "name": "batch_normalization_11/moving_variance",
+                    "name": "batch_normalization/moving_variance",
                     "shape": [
                         50
                     ],
                     "dtype": "float32"
                 },
                 {
-                    "name": "embedding_18/embeddings",
+                    "name": "embedding/embeddings",
                     "shape": [
                         14,
                         2
@@ -243,7 +259,7 @@
                     "dtype": "float32"
                 },
                 {
-                    "name": "softmax_17/kernel",
+                    "name": "softmax/kernel",
                     "shape": [
                         50,
                         14
@@ -251,7 +267,7 @@
                     "dtype": "float32"
                 },
                 {
-                    "name": "softmax_17/bias",
+                    "name": "softmax/bias",
                     "shape": [
                         14
                     ],

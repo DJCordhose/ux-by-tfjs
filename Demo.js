@@ -9,7 +9,7 @@ export class Demo extends LitElement {
     static get properties() {
         return {
             prediction: { type: Array },
-            help: { type: Array }
+            probas: { type: Array }
         };
     }
 
@@ -26,10 +26,11 @@ export class Demo extends LitElement {
     createHintButton(id, text, listener, record=true) {
         const proba = this.probas[id] || 0.5;
         const clickListener = record ? (e) => collector.recordClick(e) && listener(e) : listener;
+        const helpListener = (e) => {clickListener(e); collector.renderHelp()};
         return html`<hint-button
         id="${id}"
         probability=${proba}
-        @click=${clickListener}
+        @click=${helpListener}
         >${text}</hint-button>`;
     }
 
