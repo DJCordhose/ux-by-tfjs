@@ -257,8 +257,8 @@ class Trainer {
     }
 
     async loadClickModel() {
-        // const url = CLICK_MODEL_URL;
-        const url = CLICK_MODEL_OVERFIT_URL
+        const url = CLICK_MODEL_URL;
+        // const url = CLICK_MODEL_OVERFIT_URL
         console.log(`loading click model from ${url}`)
         this.clickModel = await tf.loadLayersModel(url);
     }
