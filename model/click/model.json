@@ -20,15 +20,14 @@
                                 5
                             ],
                             "dtype": "float32",
-                            "input_dim": 14,
+                            "input_dim": 13,
                             "output_dim": 2,
                             "embeddings_initializer": {
                                 "class_name": "RandomUniform",
                                 "config": {
                                     "minval": -0.05,
                                     "maxval": 0.05,
-                                    "seed": null,
-                                    "dtype": "float32"
+                                    "seed": null
                                 }
                             },
                             "embeddings_regularizer": null,
@@ -56,23 +55,19 @@
                             "kernel_initializer": {
                                 "class_name": "GlorotUniform",
                                 "config": {
-                                    "seed": null,
-                                    "dtype": "float32"
+                                    "seed": null
                                 }
                             },
                             "recurrent_initializer": {
                                 "class_name": "Orthogonal",
                                 "config": {
                                     "gain": 1.0,
-                                    "seed": null,
-                                    "dtype": "float32"
+                                    "seed": null
                                 }
                             },
                             "bias_initializer": {
                                 "class_name": "Zeros",
-                                "config": {
-                                    "dtype": "float32"
-                                }
+                                "config": {}
                             },
                             "kernel_regularizer": null,
                             "recurrent_regularizer": null,
@@ -100,27 +95,19 @@
                             "scale": true,
                             "beta_initializer": {
                                 "class_name": "Zeros",
-                                "config": {
-                                    "dtype": "float32"
-                                }
+                                "config": {}
                             },
                             "gamma_initializer": {
                                 "class_name": "Ones",
-                                "config": {
-                                    "dtype": "float32"
-                                }
+                                "config": {}
                             },
                             "moving_mean_initializer": {
                                 "class_name": "Zeros",
-                                "config": {
-                                    "dtype": "float32"
-                                }
+                                "config": {}
                             },
                             "moving_variance_initializer": {
                                 "class_name": "Ones",
-                                "config": {
-                                    "dtype": "float32"
-                                }
+                                "config": {}
                             },
                             "beta_regularizer": null,
                             "gamma_regularizer": null,
@@ -145,21 +132,18 @@
                             "name": "softmax",
                             "trainable": true,
                             "dtype": "float32",
-                            "units": 14,
+                            "units": 13,
                             "activation": "softmax",
                             "use_bias": true,
                             "kernel_initializer": {
                                 "class_name": "GlorotUniform",
                                 "config": {
-                                    "seed": null,
-                                    "dtype": "float32"
+                                    "seed": null
                                 }
                             },
                             "bias_initializer": {
                                 "class_name": "Zeros",
-                                "config": {
-                                    "dtype": "float32"
-                                }
+                                "config": {}
                             },
                             "kernel_regularizer": null,
                             "bias_regularizer": null,
@@ -172,6 +156,13 @@
             }
         },
         "training_config": {
+            "loss": "sparse_categorical_crossentropy",
+            "metrics": [
+                "accuracy"
+            ],
+            "weighted_metrics": null,
+            "sample_weight_mode": null,
+            "loss_weights": null,
             "optimizer_config": {
                 "class_name": "Adam",
                 "config": {
@@ -183,14 +174,7 @@
                     "epsilon": 1e-07,
                     "amsgrad": false
                 }
-            },
-            "loss": "sparse_categorical_crossentropy",
-            "metrics": [
-                "accuracy"
-            ],
-            "weighted_metrics": null,
-            "sample_weight_mode": null,
-            "loss_weights": null
+            }
         }
     },
     "weightsManifest": [
@@ -253,7 +237,7 @@
                 {
                     "name": "embedding/embeddings",
                     "shape": [
-                        14,
+                        13,
                         2
                     ],
                     "dtype": "float32"
@@ -262,14 +246,14 @@
                     "name": "softmax/kernel",
                     "shape": [
                         50,
-                        14
+                        13
                     ],
                     "dtype": "float32"
                 },
                 {
                     "name": "softmax/bias",
                     "shape": [
-                        14
+                        13
                     ],
                     "dtype": "float32"
                 }

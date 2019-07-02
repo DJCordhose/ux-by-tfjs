@@ -8,7 +8,12 @@ const PREDICTION_EVENT_THRESHOLD = 1;
 
 const PREDICTION_BUFFER_LENGTH = 25;
 
-const buttonText2Id = ['<EMPTY>', '<START>', 'download-model', 'load-local-model',
+const EMPTY = '<EMPTY>';
+const START = '<START>';
+
+const CLICK_PATH_LENGTH = 5;
+
+const buttonText2Id = [EMPTY, START, 'download-model', 'load-local-model',
        'reset-data', 'reset-model', 'save-model-to-local', 'show-eval',
        'show-model', 'toggle-prediction', 'toggle-visor', 'train-model',
        'upload-model'];
@@ -219,13 +224,17 @@ class Collector {
 
     }
 
-    async predictHelp() {
-        const sequence = this.clickData;
-        // TODO
-        // const sequence = this.positionPredictionSlice();
-        const prediction = await trainer.predictClick(sequence);
+    buttonId2Num(buttonId) {
+        return buttonText2Id.lastIndexOf(buttonId);
+    }
 
-        // const prediction = [0.2, 0.1, 0.1, 0.1, 0.0, 0.0, 0.0,  0.3,  0.1,  0.7,  0.0];
+    async predictHelp() {
+        let sequence = this.clickData[this.clickData.length - 1];
+        sequence = ['<EMPTY>', '<EMPTY>', '<EMPTY>', '<EMPTY>', '<START>'].concat(sequence);
+        sequence = sequence.slice(sequence.length - CLICK_PATH_LENGTH, sequence.length)
+        sequence = sequence.map(id => this.buttonId2Num(id));
+
+        const prediction = await trainer.predictClick(sequence);
         return prediction;
     }
 
@@ -234,10 +243,11 @@ class Collector {
                 console.log('rendering help')
 
                 const prediction = await this.predictHelp();
-                const probas = {'download-model': prediction[0], 'load-local-model': prediction[1],
-                'reset-data': prediction[2], 'reset-model': prediction[3], 'save-model-to-local': prediction[4], 'show-eval': prediction[5],
-                'show-model': prediction[6], 'toggle-prediction': prediction[7], 'toggle-visor': prediction[8], 'train-model': prediction[9],
-                'upload-model': prediction[10]};
+                const probas = {'download-model': prediction[2], 'load-local-model': prediction[3],
+                'reset-data': prediction[4], 'reset-model': prediction[5], 'save-model-to-local': prediction[6], 'show-eval': prediction[7],
+                'show-model': prediction[8], 'toggle-prediction': prediction[9], 'toggle-visor': prediction[10], 'train-model': prediction[11],
+                'upload-model': prediction[12]};
+                console.log(probas);
                 this.demoEl.probas = probas;
             }
     }

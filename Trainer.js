@@ -31,6 +31,7 @@ class Trainer {
 
     constructor() {
         this.init();
+        this.loadClickModel();
     }
 
     init() {
@@ -260,9 +261,9 @@ class Trainer {
 
     async predictClick(X) {
         if (!this.clickModel) {
-            this.loadClickModel();
+            await this.loadClickModel();
         }
-        const prediction = await this.clickModel(tf.tensor3d([X])).data();
+        const prediction = await this.clickModel.predict(tf.tensor([X])).data();
         console.log(prediction)
         return prediction;
     }

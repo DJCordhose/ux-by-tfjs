@@ -5,6 +5,8 @@ import { trainer } from "./Trainer";
 const PRIMARY_THRESHOLD = 0.4;
 const SECONDARY_THRESHOLD = 0.2;
 
+const DEFAULT_PROBA = -1;
+
 export class Demo extends LitElement {
     static get properties() {
         return {
@@ -16,15 +18,15 @@ export class Demo extends LitElement {
     constructor() {
         super();
         this.prediction = [0.33, 0.33, 0.33]
-        this.probas = {'download-model': 0.5, 'load-local-model': 0.5,
-        'reset-data': 0.5, 'reset-model': 0.5, 'save-model-to-local': 0.5, 'show-eval': 0.5,
-        'show-model': 0.5, 'toggle-prediction': 0.5, 'toggle-visor': 0.5, 'train-model': 0.5,
-        'upload-model': 0.5};
+        this.probas = {'download-model': DEFAULT_PROBA, 'load-local-model': DEFAULT_PROBA,
+        'reset-data': DEFAULT_PROBA, 'reset-model': DEFAULT_PROBA, 'save-model-to-local': DEFAULT_PROBA, 'show-eval': DEFAULT_PROBA,
+        'show-model': DEFAULT_PROBA, 'toggle-prediction': DEFAULT_PROBA, 'toggle-visor': DEFAULT_PROBA, 'train-model': DEFAULT_PROBA,
+        'upload-model': DEFAULT_PROBA};
     }
 
     // TODO: not sure if this should rather be a component (if this breaks performance of change detection)
     createHintButton(id, text, listener, record=true) {
-        const proba = this.probas[id] || 0.5;
+        const proba = this.probas[id] || DEFAULT_PROBA;
         const clickListener = record ? (e) => collector.recordClick(e) && listener(e) : listener;
         const helpListener = (e) => {clickListener(e); collector.renderHelp()};
         return html`<hint-button
