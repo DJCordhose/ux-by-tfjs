@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 // console.log(tf.version);
 // console.log(tfvis.version);
 
-const EPOCHS = 200;
+const EPOCHS = 100;
 const BATCH_SIZE = 200;
 
 const N_FEATURES = 5;
@@ -26,6 +26,9 @@ const CONVERTED_MODEL_URL =
 
 const CLICK_MODEL_URL =
     "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/click/model.json";
+
+const CLICK_MODEL_OVERFIT_URL =
+    "https://raw.githubusercontent.com/DJCordhose/ux-by-tfjs/master/model/click-overfit/model.json";
 
 class Trainer {
 
@@ -254,7 +257,8 @@ class Trainer {
     }
 
     async loadClickModel() {
-        const url = CLICK_MODEL_URL;
+        // const url = CLICK_MODEL_URL;
+        const url = CLICK_MODEL_OVERFIT_URL
         console.log(`loading click model from ${url}`)
         this.clickModel = await tf.loadLayersModel(url);
     }
