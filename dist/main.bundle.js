@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "8726cfabf290b559750a";
+/******/ 	var hotCurrentHash = "bd924ad60c3bedad460f";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -1203,7 +1203,7 @@ __webpack_require__.r(__webpack_exports__);
 // console.log(tf.version);
 // console.log(tfvis.version);
 
-const EPOCHS = 100;
+const EPOCHS = 200;
 const BATCH_SIZE = 200;
 
 const N_FEATURES = 5;
@@ -1284,6 +1284,9 @@ class Trainer {
 
     prepareData(data) {
         console.log('preparing datasets', data.length)
+
+        // make sure validation isn't always the last clicks 
+        data = lodash_es__WEBPACK_IMPORTED_MODULE_0__["shuffle"](data);
 
         const xs = data.map(({ x }) => Object.values(x));
         // console.log(xs)
