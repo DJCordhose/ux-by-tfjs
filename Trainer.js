@@ -6,7 +6,7 @@ import * as _ from 'lodash-es';
 // console.log(tf.version);
 // console.log(tfvis.version);
 
-const EPOCHS = 100;
+const EPOCHS = 200;
 const BATCH_SIZE = 200;
 
 const N_FEATURES = 5;
@@ -87,6 +87,9 @@ class Trainer {
 
     prepareData(data) {
         console.log('preparing datasets', data.length)
+
+        // make sure validation isn't always the last clicks 
+        data = _.shuffle(data);
 
         const xs = data.map(({ x }) => Object.values(x));
         // console.log(xs)
